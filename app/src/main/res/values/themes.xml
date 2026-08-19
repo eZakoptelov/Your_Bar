@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.YourBar" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Цвет нижней панели будет совпадать с фоном вашего bottom_nav -->
+        <item name="android:navigationBarColor">@color/white</item>
+
+        <!-- Чтобы белая панель не сливалась со светлым текстом кнопок системы в светлой теме -->
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <!-- Опционально: убираем тень под ActionBar, если он появится -->
+        <item name="elevationOverlayEnabled">false</item>
     </style>
 
     <style name="Theme.YourBar" parent="Base.Theme.YourBar" />

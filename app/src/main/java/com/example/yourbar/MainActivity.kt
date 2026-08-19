@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,12 +27,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Обработка системных отступов (статус-бар, навигационная панель)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
+            // Устанавливаем паддинги для контента (чтобы он не уезжал под статус-бар)
+            view.updatePadding(left = insets.left, right = insets.right, top = insets.top)
+
+            // Отступ снизу обнуляем ТОЛЬКО если текущий вид — CoordinatorLayout
+            if (view is CoordinatorLayout) {
+                view.updatePadding(bottom = 0)
+                view.fitsSystemWindows = false // Устаревший флаг, но допустим здесь для старых библиотек
+            }
+
+            // Сообщаем системе, что мы сами нарисовали контент под навигационной панелью
+            WindowInsetsCompat.CONSUMED
+        }
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController

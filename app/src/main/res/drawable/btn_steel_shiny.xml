@@ -1,0 +1,43 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Слой 1: основной металл (теперь низ светлее) -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <!-- Угол 135° даёт свет сверху-слева, а низ делаем светлее через цвета -->
+            <gradient
+                android:angle="135"
+                android:startColor="#E8EDF3"
+            android:centerColor="#D9E1E8"
+            android:endColor="#E0E7ED"
+            android:type="linear" />
+            <stroke android:width="1dp" android:color="#A0AEC0" />
+        </shape>
+    </item>
+
+    <!-- Слой 2: яркий блик (оставляем как был — он даёт "блеск") -->
+    <item android:top="2dp" android:bottom="16dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:angle="-45"
+                android:startColor="#FFFFFF"
+                android:centerColor="#FFFFFF"
+                android:endColor="#00000000"
+                android:type="linear"
+                android:gradientRadius="100dp" />
+        </shape>
+    </item>
+
+    <!-- Слой 3: лёгкая тень снизу (теперь она чуть слабее, чтобы низ не "утяжелял" кнопку) -->
+    <item android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:angle="270"
+                android:startColor="#00000000"
+                android:endColor="#3B4252"
+            android:type="linear" />
+        </shape>
+    </item>
+</layer-list>
