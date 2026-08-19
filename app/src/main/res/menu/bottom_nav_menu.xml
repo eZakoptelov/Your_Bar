@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dest_assembly"
+        android:icon="@drawable/ic_build"
+        android:title="@string/assembling" />
+
+    <item
+        android:id="@+id/dest_cart"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="@string/Cart" />
+</menu>

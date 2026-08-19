@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dest_assembly">
+
+    <fragment
+        android:id="@+id/dest_assembly"
+        android:name="com.example.yourbar.ui.AssemblyFragment"
+        android:label="Сборка"
+        tools:layout="@layout/fragment_assembly" />
+
+    <fragment
+        android:id="@+id/dest_cart"
+        android:name="com.example.yourbar.ui.CartFragment"
+        android:label="Корзина"
+        tools:layout="@layout/fragment_cart" />
+
+
+    <!-- Фрагменты вкладок -->
+    <fragment
+        android:id="@+id/dest_budget"
+        android:name="com.example.yourbar.ui.assembly.BudgetFragment"
+        android:label="Budget" />
+
+    <fragment
+        android:id="@+id/dest_premium"
+        android:name="com.example.yourbar.ui.assembly.PremiumFragment"
+        android:label="Premium" />
+
+    <fragment
+        android:id="@+id/dest_perfectum"
+        android:name="com.example.yourbar.ui.assembly.PerfectumFragment"
+        android:label="Perfectum" />
+
+    <fragment
+        android:id="@+id/dest_exclusive"
+        android:name="com.example.yourbar.ui.assembly.ExclusiveFragment"
+        android:label="Exclusive" />
+
+    <!-- 4 разных калькулятора (пустые пока) -->
+    <fragment
+        android:id="@+id/calc_budget_fragment"
+        android:name="com.example.yourbar.ui.calculator.BudgetCalculatorFragment"
+        android:label="Budget Calculator" />
+
+    <fragment
+        android:id="@+id/calc_premium_fragment"
+        android:name="com.example.yourbar.ui.calculator.PremiumCalculatorFragment"
+        android:label="Premium Calculator" />
+
+    <fragment
+        android:id="@+id/calc_perfectum_fragment"
+        android:name="com.example.yourbar.ui.calculator.PerfectumCalculatorFragment"
+        android:label="Perfectum Calculator" />
+
+    <fragment
+        android:id="@+id/calc_exclusive_fragment"
+        android:name="com.example.yourbar.ui.calculator.ExclusiveCalculatorFragment"
+        android:label="Exclusive Calculator" />
+</navigation>

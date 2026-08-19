@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue_active">#4D90FF</color>
+    <color name="colorOnSurfaceVariant">#757575</color>
+    <color name="red">#FF0000</color>
+    <color name="Lime">#00FF00</color>
+    <color name="DarkGreen">#006400</color>
+    <color name="DarkViolet">#9400D3</color>
+    <color name="MediumSpringGreen">#00FA9A</color>
+    <color name="color_gold_active">#FFD700</color>      <!-- Золото -->
+    <color name="color_gray_inactive">#A9A9A9</color>   <!-- Серый  -->
+
+
+
+</resources>
