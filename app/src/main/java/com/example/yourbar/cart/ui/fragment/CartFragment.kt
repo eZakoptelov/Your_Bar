@@ -1,16 +1,14 @@
-package com.example.yourbar.ui.assembly
+package com.example.yourbar.cart.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.yourbar.R
-import com.example.yourbar.databinding.FragmentExclusiveBinding
+import com.example.yourbar.databinding.FragmentCartBinding
 
-class ExclusiveFragment : Fragment() {
-    private var _binding: FragmentExclusiveBinding? = null
+class CartFragment : Fragment() {
+    private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,19 +16,14 @@ class ExclusiveFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExclusiveBinding.inflate(inflater, container, false)
+        _binding = FragmentCartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.calculateBtnExclusive.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.calc_exclusive_fragment)
-        }
+        // Сюда позже добавишь логику корзины
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

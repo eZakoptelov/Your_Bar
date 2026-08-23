@@ -1,14 +1,16 @@
-package com.example.yourbar.ui.calculator
+package com.example.yourbar.budget.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.yourbar.databinding.FragmentBudgetCalculatorBinding
+import androidx.navigation.fragment.findNavController
+import com.example.yourbar.R
+import com.example.yourbar.databinding.FragmentBudgetBinding
 
-class BudgetCalculatorFragment : Fragment() {
-    private var _binding: FragmentBudgetCalculatorBinding? = null
+class BudgetFragment : Fragment() {
+    private var _binding: FragmentBudgetBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -16,13 +18,17 @@ class BudgetCalculatorFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBudgetCalculatorBinding.inflate(inflater, container, false)
+        _binding = FragmentBudgetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Сюда позже логику калькулятора Бюджет
+
+        binding.calculateBtnBudget.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.calc_budget_fragment)
+        }
     }
 
     override fun onDestroyView() {
