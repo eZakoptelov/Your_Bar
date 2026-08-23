@@ -92,31 +92,35 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb1mm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
+            app:buttonTint="@color/black"
             android:checked="true"
             android:text="1 мм"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb1_5mm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
+            app:buttonTint="@color/black"
             android:text="1.5 мм"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb2mm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
+            app:buttonTint="@color/black"
             android:text="2 мм"/>
     </RadioGroup>
+
 
     <!-- Ширина -->
     <TextView
@@ -149,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Введите размер в мм"/>
+            android:hint="Введите чистый размер в мм "/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Глубина -->
@@ -183,7 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Введите размер в мм"/>
+            android:hint="Введите чистый размер в мм"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Кнопка расчёта -->
@@ -207,6 +211,8 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Результат -->
+
+
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
@@ -214,9 +220,37 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Вес: — кг"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/btnCalculate"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Площадь: — м²"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvResult"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Размеры листа -->
+    <TextView
+        android:id="@+id/tvDimensions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Размер листа: — × — мм"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvArea"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

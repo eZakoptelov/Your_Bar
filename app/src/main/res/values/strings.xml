@@ -41,7 +41,7 @@
         libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
         sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
-        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+        vestibulum. Fuse dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="Cart">Корзина</string>
     <string name="assembling">Сборка</string>
@@ -50,4 +50,12 @@
     <string name="exclusive">Exclusive</string>
     <string name="budget">Бюджет</string>
     <string name="calculate">Рассчитать</string>
+    <string name="price_label">Цена</string>
+    <string name="save">Сохранить</string>
+
+    <string name="result_weight">Вес: %1$s кг</string>
+    <string name="result_area">Площадь: %1$s м²</string>
+    <string name="result_dimensions">Размер: %1$d × %2$d мм</string>
+    <string name="error_message">Ошибка: %1$s</string>
+
 </resources>
