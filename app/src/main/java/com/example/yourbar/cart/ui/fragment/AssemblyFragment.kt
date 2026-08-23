@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.yourbar.budget.presentation.fragment.BudgetFragment
 import com.example.yourbar.databinding.FragmentAssemblyBinding
-import com.example.yourbar.budget.ui.fragment.BudgetFragment
 import com.example.yourbar.exclusive.ui.fragment.ExclusiveFragment
 import com.example.yourbar.perfectum.ui.fragment.PerfectumFragment
 import com.example.yourbar.premium.ui.fragment.PremiumFragment

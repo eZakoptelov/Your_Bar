@@ -29,7 +29,7 @@
     <!-- Фрагменты вкладок (Budget, Premium, Perfectum, Exclusive) -->
     <fragment
         android:id="@+id/dest_budget"
-        android:name="com.example.yourbar.budget.ui.fragment.BudgetFragment"
+        android:name="com.example.yourbar.budget.presentation.fragment.BudgetFragment"
         android:label="Budget" />
 
     <fragment
@@ -50,7 +50,7 @@
     <!-- 4 разных калькулятора (пустые пока) -->
     <fragment
         android:id="@+id/calc_budget_fragment"
-        android:name="com.example.yourbar.budget.ui.calculator.BudgetCalculatorFragment"
+        android:name="com.example.yourbar.budget.presentation.calculator.BudgetCalculatorFragment"
         android:label="Budget Calculator" />
 
     <fragment
