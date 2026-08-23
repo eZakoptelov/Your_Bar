@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:paddingBottom="128dp">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -22,8 +21,8 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Марка стали -->
         <TextView
@@ -33,42 +32,42 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Марка стали:"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <RadioGroup
             android:id="@+id/rgSteelType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tvSteelTypeLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSteelTypeLabel">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rbAisi430"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/black"
-                app:buttonTint="@color/black"
                 android:checked="true"
-                android:text="AISI 430"/>
+                android:text="AISI 430"
+                android:textColor="@color/black"
+                app:buttonTint="@color/black" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rbAisi304"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="AISI 304"
                 android:textColor="@color/black"
-                app:buttonTint="@color/black"
-                android:text="AISI 304"/>
+                app:buttonTint="@color/black" />
         </RadioGroup>
 
         <!-- Толщина -->
@@ -79,51 +78,51 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Толщина, мм:"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/rgSteelType"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rgSteelType" />
 
         <RadioGroup
             android:id="@+id/rgThickness"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tvThicknessLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvThicknessLabel">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb1mm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/black"
-                app:buttonTint="@color/black"
                 android:checked="true"
-                android:text="1 мм"/>
+                android:text="1 мм"
+                android:textColor="@color/black"
+                app:buttonTint="@color/black" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb1_5mm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="1.5 мм"
                 android:textColor="@color/black"
-                app:buttonTint="@color/black"
-                android:text="1.5 мм"/>
+                app:buttonTint="@color/black" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb2mm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="2 мм"
                 android:textColor="@color/black"
-                app:buttonTint="@color/black"
-                android:text="2 мм"/>
+                app:buttonTint="@color/black" />
         </RadioGroup>
 
         <!-- Ширина -->
@@ -134,30 +133,30 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:text="Ширина, мм:"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/rgThickness"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rgThickness" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilWidth"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvWidthLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWidthLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Введите чистый размер в мм"/>
+                android:hint="Введите чистый размер в мм"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Глубина -->
@@ -168,39 +167,91 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Глубина, мм:"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tilWidth"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilWidth" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDepth"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvDepthLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDepthLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDepth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Введите чистый размер в мм"/>
+                android:hint="Введите чистый размер в мм"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Кнопка расчёта -->
+        <!-- Высота -->
+        <TextView
+            android:id="@+id/tvHeightLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Высота, мм:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilDepth" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilHeight"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeightLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Введите высоту в мм"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Переключатель: убрать навесной карман -->
+        <androidx.appcompat.widget.AppCompatToggleButton
+            android:id="@+id/tbRemoveAdditionalPocket"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/toggle_rounded_bg"
+            android:checked="false"
+            android:textColor="@color/black"
+            android:textOff="Убрать навесной карман"
+            android:textOn="Вернуть навесной карман"
+            android:textSize="14sp"
+            app:cornerRadius="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilHeight" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculate"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/btn_steel_shiny"
@@ -210,9 +261,9 @@
             android:textSize="22sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
-            app:layout_constraintTop_toBottomOf="@id/tilDepth"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tbRemoveAdditionalPocket" />
 
         <!-- Результат: общий вес -->
         <TextView
@@ -222,13 +273,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="Общий вес: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/btnCalculate"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnCalculate" />
 
-        <!-- Вес AISI 304 (вместо размеров листа) -->
+        <!-- Вес AISI 304 -->
         <TextView
             android:id="@+id/tvWeightAisi304"
             android:layout_width="wrap_content"
@@ -236,13 +288,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="Aisi 304: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tvResult"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvResult" />
 
-        <!-- Вес AISI 430 (вместо размеров листа) -->
+        <!-- Вес AISI 430 -->
         <TextView
             android:id="@+id/tvWeightAisi430"
             android:layout_width="wrap_content"
@@ -250,11 +303,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="Aisi 430: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tvWeightAisi304"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWeightAisi304" />
 
         <!-- Вес столешницы -->
         <TextView
@@ -263,10 +317,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="26dp"
-            android:textSize="18sp"
+            android:text="Столешница: — кг"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tvWeightAisi430"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:visibility="gone"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWeightAisi430" />
 
         <!-- Вес кармана для бутылок -->
         <TextView
@@ -275,9 +331,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:text="Карман для бутылок: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/tvCountertopWeight"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCountertopWeight" />
 
         <!-- Вес корпуса мойки -->
         <TextView
@@ -286,9 +345,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:text="Корпус мойки: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/tvPocketWeightAddition"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPocketWeightAddition" />
 
         <!-- Вес перфорированной вставки -->
         <TextView
@@ -297,9 +359,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:text="Перфорированная вставка: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/tvSinkWeight"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSinkWeight" />
 
         <!-- Вес съёмных перегородок -->
         <TextView
@@ -308,9 +373,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:text="Съёмные перегородки: — кг"
+            android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/tvInsertWeight"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvInsertWeight" />
 
+        <!-- Результат трубы 25x25 (погонные метры) -->
+        <TextView
+            android:id="@+id/tvPipeResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Труба 25×25: — мп"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPartitionsWeight" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

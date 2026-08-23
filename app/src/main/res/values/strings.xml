@@ -66,8 +66,8 @@
     <string name="countertop_weight_line">Столешница — %1$s кг</string>
 
 
-    <string name="sink_weight_line">Корпус мойки: %1$s кг</string>
-    <string name="insert_weight_line">Перфорированная вставка: %1$s кг</string>
+    <string name="sink_weight_line">Мойка: %1$s кг</string>
+    <string name="insert_weight_line">Дренажная вставка: %1$s кг</string>
     <string name="partitions_weight_line">Съёмные перегородки: %1$s кг</string>
 
     <string name="aisi304_weight_line">AISI 304: %s кг</string>

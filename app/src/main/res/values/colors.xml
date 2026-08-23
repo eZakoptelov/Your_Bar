@@ -16,6 +16,7 @@
     <color name="status_error">#FF5722</color>
 
 
-
+    <color name="red_alert">#FF3B30</color>        <!-- красный для «Убрать» -->
+    <color name="light_gray_toggle">#F5F5F5</color> <!-- нейтральный для «Вернуть» -->
 
 </resources>
