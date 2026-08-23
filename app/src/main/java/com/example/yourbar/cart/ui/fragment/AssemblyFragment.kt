@@ -1,19 +1,18 @@
-package com.example.yourbar.ui
+package com.example.yourbar.cart.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.yourbar.databinding.FragmentAssemblyBinding
-import com.example.yourbar.ui.assembly.BudgetFragment
-import com.example.yourbar.ui.assembly.ExclusiveFragment
-import com.example.yourbar.ui.assembly.PerfectumFragment
-import com.example.yourbar.ui.assembly.PremiumFragment
+import com.example.yourbar.budget.ui.fragment.BudgetFragment
+import com.example.yourbar.exclusive.ui.fragment.ExclusiveFragment
+import com.example.yourbar.perfectum.ui.fragment.PerfectumFragment
+import com.example.yourbar.premium.ui.fragment.PremiumFragment
+import com.google.android.material.tabs.TabLayoutMediator
 
 class AssemblyFragment : Fragment() {
 
@@ -40,7 +39,7 @@ class AssemblyFragment : Fragment() {
         viewPager.adapter = adapter
 
         // Связываем TabLayout и ViewPager2
-        com.google.android.material.tabs.TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Бюджет"
                 1 -> tab.text = "Premium"

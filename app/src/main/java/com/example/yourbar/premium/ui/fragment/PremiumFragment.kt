@@ -1,4 +1,4 @@
-package com.example.yourbar.ui.assembly
+package com.example.yourbar.premium.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.yourbar.R
 import com.example.yourbar.databinding.FragmentPremiumBinding
-
 
 class PremiumFragment : Fragment() {
     private var _binding: FragmentPremiumBinding? = null

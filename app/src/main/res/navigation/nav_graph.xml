@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/dest_assembly"
-        android:name="com.example.yourbar.ui.AssemblyFragment"
+        android:name="com.example.yourbar.cart.ui.fragment.AssemblyFragment"
         android:label="Сборка"
         tools:layout="@layout/fragment_assembly" />
 
     <fragment
         android:id="@+id/dest_cart"
-        android:name="com.example.yourbar.ui.CartFragment"
+        android:name="com.example.yourbar.cart.ui.fragment.CartFragment"
         android:label="Корзина"
         tools:layout="@layout/fragment_cart" />
 
@@ -21,42 +21,42 @@
     <!-- Фрагменты вкладок -->
     <fragment
         android:id="@+id/dest_budget"
-        android:name="com.example.yourbar.ui.assembly.BudgetFragment"
+        android:name="com.example.yourbar.budget.ui.fragment.BudgetFragment"
         android:label="Budget" />
 
     <fragment
         android:id="@+id/dest_premium"
-        android:name="com.example.yourbar.ui.assembly.PremiumFragment"
+        android:name="com.example.yourbar.premium.ui.fragment.PremiumFragment"
         android:label="Premium" />
 
     <fragment
         android:id="@+id/dest_perfectum"
-        android:name="com.example.yourbar.ui.assembly.PerfectumFragment"
+        android:name="com.example.yourbar.perfectum.ui.fragment.PerfectumFragment"
         android:label="Perfectum" />
 
     <fragment
         android:id="@+id/dest_exclusive"
-        android:name="com.example.yourbar.ui.assembly.ExclusiveFragment"
+        android:name="com.example.yourbar.exclusive.ui.fragment.ExclusiveFragment"
         android:label="Exclusive" />
 
     <!-- 4 разных калькулятора (пустые пока) -->
     <fragment
         android:id="@+id/calc_budget_fragment"
-        android:name="com.example.yourbar.ui.calculator.BudgetCalculatorFragment"
+        android:name="com.example.yourbar.budget.ui.calculator.BudgetCalculatorFragment"
         android:label="Budget Calculator" />
 
     <fragment
         android:id="@+id/calc_premium_fragment"
-        android:name="com.example.yourbar.ui.calculator.PremiumCalculatorFragment"
+        android:name="com.example.yourbar.premium.ui.calculator.PremiumCalculatorFragment"
         android:label="Premium Calculator" />
 
     <fragment
         android:id="@+id/calc_perfectum_fragment"
-        android:name="com.example.yourbar.ui.calculator.PerfectumCalculatorFragment"
+        android:name="com.example.yourbar.perfectum.ui.calculator.PerfectumCalculatorFragment"
         android:label="Perfectum Calculator" />
 
     <fragment
         android:id="@+id/calc_exclusive_fragment"
-        android:name="com.example.yourbar.ui.calculator.ExclusiveCalculatorFragment"
+        android:name="com.example.yourbar.exclusive.ui.calculator.ExclusiveCalculatorFragment"
         android:label="Exclusive Calculator" />
 </navigation>

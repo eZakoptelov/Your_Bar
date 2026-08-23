@@ -1,16 +1,14 @@
-package com.example.yourbar.ui.assembly
+package com.example.yourbar.perfectum.ui.calculator
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.yourbar.R
-import com.example.yourbar.databinding.FragmentBudgetBinding
+import com.example.yourbar.databinding.FragmentPerfectumCalculatorBinding
 
-class BudgetFragment : Fragment() {
-    private var _binding: FragmentBudgetBinding? = null
+class PerfectumCalculatorFragment : Fragment() {
+    private var _binding: FragmentPerfectumCalculatorBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,17 +16,13 @@ class BudgetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBudgetBinding.inflate(inflater, container, false)
+        _binding = FragmentPerfectumCalculatorBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.calculateBtnBudget.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.calc_budget_fragment)
-        }
+        // Сюда позже логику калькулятора Бюджет
     }
 
     override fun onDestroyView() {
