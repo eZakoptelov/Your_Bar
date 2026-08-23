@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/dest_assembly">
 
+    <!-- Основные пункты BottomNavigationView -->
     <fragment
         android:id="@+id/dest_assembly"
         android:name="com.example.yourbar.cart.ui.fragment.AssemblyFragment"
@@ -17,8 +18,15 @@
         android:label="Корзина"
         tools:layout="@layout/fragment_cart" />
 
+    <!-- НОВЫЙ: Пункт «Цена» -->
+    <fragment
+        android:id="@+id/dest_price"
+        android:name="com.example.yourbar.price.ui.fragment.PriceFragment"
+        android:label="Цена"
+        tools:layout="@layout/fragment_price" />
 
-    <!-- Фрагменты вкладок -->
+
+    <!-- Фрагменты вкладок (Budget, Premium, Perfectum, Exclusive) -->
     <fragment
         android:id="@+id/dest_budget"
         android:name="com.example.yourbar.budget.ui.fragment.BudgetFragment"

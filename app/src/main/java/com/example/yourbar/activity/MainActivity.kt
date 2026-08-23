@@ -1,4 +1,4 @@
-package com.example.yourbar.ui
+package com.example.yourbar.activity
 
 import android.os.Bundle
 import android.view.View

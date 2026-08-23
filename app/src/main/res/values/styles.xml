@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Button.SteelShiny" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:background">@drawable/btn_steel_shiny</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="rippleColor">#40000000</item>
+        <item name="android:textColor">#1F2937</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:minHeight">50dp</item>
+    </style>
+
+
+
+
+</resources>

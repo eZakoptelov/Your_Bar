@@ -10,4 +10,10 @@
         android:id="@+id/dest_cart"
         android:icon="@drawable/ic_shopping_cart_2"
         android:title="@string/Cart" />
+
+    <!-- Новый пункт: Цена -->
+    <item
+        android:id="@+id/dest_price"
+        android:icon="@drawable/ic_price"
+        android:title="@string/price_label" />
 </menu>

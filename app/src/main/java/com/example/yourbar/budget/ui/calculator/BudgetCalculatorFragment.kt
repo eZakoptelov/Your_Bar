@@ -1,9 +1,11 @@
 package com.example.yourbar.budget.ui.calculator
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.yourbar.R
 import com.example.yourbar.databinding.FragmentBudgetCalculatorBinding
@@ -13,6 +15,9 @@ class BudgetCalculatorFragment : Fragment() {
 
     private var _binding: FragmentBudgetCalculatorBinding? = null
     private val binding get() = _binding!!
+
+    // Величина автоматического добавления к каждому размеру (в мм)
+    private val autoAddMm = 90
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,41 +32,54 @@ class BudgetCalculatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnCalculate.setOnClickListener {
-            calculateWeight()
+            hideKeyboard()
+            calculateWeightAndArea()
         }
     }
 
-    private fun calculateWeight() {
+    /**
+     * Скрывает программную клавиатуру
+     */
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // Скрываем клавиатуру, привязываясь к окну текущего фрагмента/активности
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    private fun calculateWeightAndArea() {
         // 1. Читаем ширину
         val widthText = binding.etWidth.text.toString().trim()
         if (widthText.isEmpty()) {
-            showError("Введите ширину")
+            showError(getString(R.string.error_message, "Введите ширину"))
             return
         }
-        val widthMm = widthText.toIntOrNull() ?: run {
-            showError("Некорректная ширина")
+        val widthBaseMm = widthText.toIntOrNull() ?: run {
+            showError(getString(R.string.error_message, "Некорректная ширина"))
             return
         }
 
-        // 2. Читаем глубину и добавляем +100 мм
+        // 2. Читаем глубину
         val depthText = binding.etDepth.text.toString().trim()
         if (depthText.isEmpty()) {
-            showError("Введите глубину")
+            showError(getString(R.string.error_message, "Введите глубину"))
             return
         }
         val depthBaseMm = depthText.toIntOrNull() ?: run {
-            showError("Некорректная глубина")
+            showError(getString(R.string.error_message, "Некорректная глубина"))
             return
         }
-        val depthMm = depthBaseMm + 100 // +100 мм автоматически
+
+        // Добавляем по +90 мм к ширине и глубине
+        val widthMm = widthBaseMm + autoAddMm
+        val depthMm = depthBaseMm + autoAddMm
 
         // 3. Выбираем марку стали (плотность)
         val steelId = binding.rgSteelType.checkedRadioButtonId
         val density = when (steelId) {
             R.id.rbAisi304 -> 7900.0 // кг/м³
-            R.id.rbAisi430 -> 7700.0 // чуть легче
+            R.id.rbAisi430 -> 7700.0
             else -> {
-                showError("Выберите марку стали")
+                showError(getString(R.string.error_message, "Выберите марку стали"))
                 return
             }
         }
@@ -73,26 +91,38 @@ class BudgetCalculatorFragment : Fragment() {
             R.id.rb1_5mm -> 1.5
             R.id.rb2mm -> 2.0
             else -> {
-                showError("Выберите толщину")
+                showError(getString(R.string.error_message, "Выберите толщину"))
                 return
             }
         }
 
-        // 5. Считаем объём и вес
-        // Переводим мм в метры: делим на 1000
+        // Переводим мм в метры для расчётов
         val widthM = widthMm / 1000.0
         val depthM = depthMm / 1000.0
         val thicknessM = thicknessMm / 1000.0
 
-        val volume = widthM * depthM * thicknessM // м³
+        // Считаем площадь (ширина × глубина) — уже с учётом +90 мм
+        val area = widthM * depthM // м²
+
+        // Считаем объём и вес
+        val volume = area * thicknessM // м³
         val weight = volume * density // кг
 
         val df = DecimalFormat("0.##")
-        binding.tvResult.text = "Вес: ${df.format(weight)} кг"
+
+        // Выводим результаты через строковые ресурсы
+        val formattedWeight = df.format(weight)
+        val formattedArea = df.format(area)
+
+        binding.tvResult.text = getString(R.string.result_weight, formattedWeight)
+        binding.tvArea.text = getString(R.string.result_area, formattedArea)
+        binding.tvDimensions.text = getString(R.string.result_dimensions, widthMm, depthMm)
     }
 
     private fun showError(message: String) {
-        binding.tvResult.text = "Ошибка: $message"
+        binding.tvResult.text = message
+        binding.tvArea.text = ""
+        binding.tvDimensions.text = ""
     }
 
     override fun onDestroyView() {
