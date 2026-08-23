@@ -53,9 +53,25 @@
     <string name="price_label">Цена</string>
     <string name="save">Сохранить</string>
 
-    <string name="result_weight">Вес: %1$s кг</string>
+    <string name="result_weight"> Общий вес: %1$s кг</string>
     <string name="result_area">Площадь: %1$s м²</string>
     <string name="result_dimensions">Размер: %1$d × %2$d мм</string>
     <string name="error_message">Ошибка: %1$s</string>
+
+    <!-- Новые строки для кармана -->
+    <string name="pocket_details">Карман для бутылок (3 плоскости + 2 боковые стенки)</string>
+    <string name="pocket_weight_addition">+ %1$s кг (карман)</string>
+    <string name="pocket_area_addition">+ %1$s м² (карман)</string>
+    <string name="pocket_weight_line">Карман для бутылок — %1$s кг</string>
+    <string name="countertop_weight_line">Столешница — %1$s кг</string>
+
+
+    <string name="sink_weight_line">Корпус мойки: %1$s кг</string>
+    <string name="insert_weight_line">Перфорированная вставка: %1$s кг</string>
+    <string name="partitions_weight_line">Съёмные перегородки: %1$s кг</string>
+
+    <string name="aisi304_weight_line">AISI 304: %s кг</string>
+    <string name="aisi430_weight_line">AISI 430: %s кг</string>
+
 
 </resources>
