@@ -1,0 +1,81 @@
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tvStationName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvStationDimensions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStationTotalWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStationPipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="#E0E0E0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Состав барной станции:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <!-- Важно: фиксированная высота или layout_weight -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParts"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="50dp"
+            android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/tvEmptyState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Нет данных о деталях"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

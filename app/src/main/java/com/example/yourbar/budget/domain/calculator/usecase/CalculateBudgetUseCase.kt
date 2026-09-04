@@ -26,9 +26,6 @@ class CalculateBudgetUseCase {
         private const val INSERT_EXTRA = 35
         private const val PART_EXTRA_H = 20
         private const val PART_REDUCE_W = 220
-
-        // Вырез: из габаритов столешницы (уже с +90 мм) вычитаем по 190 мм
-        private const val CUTOUT_REDUCTION_MM = 190
     }
 
     fun execute(params: CalculationInputParams): CalculationResult {
@@ -36,32 +33,22 @@ class CalculateBudgetUseCase {
         val countertopWidthMm = params.widthMm + AUTO_ADD_MM
         val countertopDepthMm = params.depthMm + AUTO_ADD_MM
 
-        // 2. Габариты выреза: из столешницы вычитаем по 190 мм
-        val cutoutWidthMm = countertopWidthMm - CUTOUT_REDUCTION_MM
-        val cutoutDepthMm = countertopDepthMm - CUTOUT_REDUCTION_MM
-
-        if (cutoutWidthMm <= 0 || cutoutDepthMm <= 0) {
-            throw IllegalArgumentException("Размеры слишком малы для формирования выреза (вырез ≤ 0 мм)")
-        }
-
         // Плотность основной столешницы
         val densityMain = when (params.steelType) {
             SteelType.AISI_304 -> DENSITY_AISI_304
             SteelType.AISI_430 -> DENSITY_AISI_430
         }
 
-        // Вес столешницы: полный лист минус вырез
+        // Вес столешницы: сплошной лист без выреза
         val totalAreaM2 = (countertopWidthMm * countertopDepthMm) / 1_000_000.0
-        val cutoutAreaM2 = (cutoutWidthMm * cutoutDepthMm) / 1_000_000.0
-        val netCountertopAreaM2 = maxOf(0.0, totalAreaM2 - cutoutAreaM2)
-
         val thicknessM = params.thicknessMm / 1000.0
-        val weightMain = netCountertopAreaM2 * thicknessM * densityMain
+        val weightMain = totalAreaM2 * thicknessM * densityMain
 
-        // 3. Карманы (базовый + дополнительные)
-        val areaFront = (countertopWidthMm / 1000.0) * (POCKET_FRONT_H / 1000.0)
-        val areaBack = (countertopWidthMm / 1000.0) * (POCKET_BACK_H / 1000.0)
-        val areaBottom = (countertopWidthMm / 1000.0) * (POCKET_DEPTH / 1000.0)
+        // 2. Карманы (базовый + дополнительные) — ширина от пользователя
+        val pocketWidthMm = params.widthMm
+        val areaFront = (pocketWidthMm / 1000.0) * (POCKET_FRONT_H / 1000.0)
+        val areaBack = (pocketWidthMm / 1000.0) * (POCKET_BACK_H / 1000.0)
+        val areaBottom = (pocketWidthMm / 1000.0) * (POCKET_DEPTH / 1000.0)
         val areaSides = 2 * ((POCKET_BACK_H / 1000.0) * (POCKET_DEPTH / 1000.0))
 
         val totalAreaPerPocket = areaFront + areaBack + areaBottom + areaSides
@@ -72,7 +59,7 @@ class CalculateBudgetUseCase {
         val additionalPocketsTotalWeightKg = weightPerPocket * additionalPocketsCount
         val totalPocketsWeightKg = weightPerPocket + additionalPocketsTotalWeightKg
 
-        // 4. Мойка (всегда AISI 304)
+        // 3. Мойка (всегда AISI 304)
         val sinkW = params.widthMm - SINK_REDUCE_W
         val sinkD = params.depthMm - SINK_REDUCE_D
 
@@ -88,13 +75,13 @@ class CalculateBudgetUseCase {
         val volSink = (frontBackArea + bottomArea + sidesArea) * (1.0 / 1000.0) // толщина 1 мм
         val weightSink = volSink * DENSITY_AISI_304
 
-        // 5. Вставка (AISI 430)
+        // 4. Вставка (AISI 430)
         val insW = sinkD + INSERT_EXTRA
         val insD = sinkW + INSERT_EXTRA
         val volInsert = (insW / 1000.0) * (insD / 1000.0) * (0.8 / 1000.0)
         val weightInsert = volInsert * DENSITY_AISI_430
 
-        // 6. Перегородки (AISI 430)
+        // 5. Перегородки (AISI 430)
         val part12H = (SINK_FIXED_H + PART_EXTRA_H) / 1000.0
         val part12D = sinkD / 1000.0
         val volPart12 = (part12H * part12D) * (0.8 / 1000.0)
@@ -130,10 +117,7 @@ class CalculateBudgetUseCase {
             insertWeightKg = weightInsert,
             partitionsWeightKg = weightPartitions,
             weightAisi304Kg = total304,
-            weightAisi430Kg = total430,
-            // Если нужно показывать размеры выреза в UI, можно вернуть их:
-            // sinkCutoutWidthMm = cutoutWidthMm,
-            // sinkCutoutDepthMm = cutoutDepthMm,
+            weightAisi430Kg = total430
         )
     }
 }

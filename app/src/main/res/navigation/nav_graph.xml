@@ -67,4 +67,9 @@
         android:id="@+id/calc_exclusive_fragment"
         android:name="com.example.yourbar.exclusive.ui.calculator.ExclusiveCalculatorFragment"
         android:label="Exclusive Calculator" />
+
+    <fragment
+        android:id="@+id/stationDetailsFragment"
+        android:name="com.example.yourbar.budget.presentation.details.StationDetailsFragment"
+        android:label="Детали станции" />
 </navigation>
