@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Настройки цен :"
+        android:text="Настройки цен:"
         android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -38,27 +38,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.55"
-            android:text="AISI 304, ₽ за кг"
+            android:text="AISI 304, цена за кг"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" — "
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPriceAisi304"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.45"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:hint="Цена"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"/>
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:suffixText="₽"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPriceAisi304"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:hint="@string/Enter_price"
+                android:textStyle="bold"
+                android:textColor="@color/Crimson"
+                android:textSize="18sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Строка 2: AISI 430 -->
@@ -80,27 +85,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.55"
-            android:text="AISI 430, ₽ за кг"
+            android:text="AISI 430, цена за кг"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" — "
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPriceAisi430"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.45"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:hint="Цена"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"/>
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:suffixText="₽"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPriceAisi430"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:hint="@string/Enter_price"
+                android:textStyle="bold"
+                android:textColor="@color/Crimson"
+                android:textSize="18sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Строка 3: Труба 25x25 -->
@@ -122,27 +132,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.55"
-            android:text="Труба 25×25, ₽ за м"
+            android:text="Труба 25×25, цена за м"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" — "
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPricePipe25"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.45"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:hint="Цена"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"/>
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:suffixText="₽"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPricePipe25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:hint="@string/Enter_price"
+                android:textStyle="bold"
+                android:textColor="@color/Crimson"
+                android:textSize="18sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Строка 4: Труба 40x40 -->
@@ -164,27 +179,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.55"
-            android:text="Труба 40×40, ₽ за м"
+            android:text="Труба 40×40, цена за м"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" — "
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPricePipe40"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.45"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:hint="Цена"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"/>
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:suffixText="₽"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPricePipe40"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:hint="@string/Enter_price"
+                android:textStyle="bold"
+                android:textColor="@color/Crimson"
+                android:textSize="18sp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Кнопка сохранить -->
@@ -194,7 +214,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="35dp"
         android:background="@drawable/btn_steel_shiny"
         android:letterSpacing="0.08"
         android:text="@string/save"

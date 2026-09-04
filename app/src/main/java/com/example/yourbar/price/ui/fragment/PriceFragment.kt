@@ -12,6 +12,7 @@ import com.example.yourbar.databinding.FragmentPriceBinding
 import java.text.DecimalFormat
 import androidx.core.content.edit
 import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
 
 class PriceFragment : Fragment() {
 
@@ -42,11 +43,57 @@ class PriceFragment : Fragment() {
 
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         loadPrices()
+        // Устанавливаем знак ₽ как endIcon для всех полей
+        setRubleEndIcon(binding.etPriceAisi304)
+        setRubleEndIcon(binding.etPriceAisi430)
+        setRubleEndIcon(binding.etPricePipe25)
+        setRubleEndIcon(binding.etPricePipe40)
 
         binding.btnSavePrices.setOnClickListener {
             savePrices()
         }
     }
+    private fun setRubleEndIcon(editText: TextInputEditText) {
+        val text = "₽"
+        val paint = android.graphics.Paint()
+        paint.color = ContextCompat.getColor(requireContext(), android.R.color.darker_gray)
+        paint.textSize = editText.textSize
+        paint.isAntiAlias = true
+
+        val bounds = android.graphics.Rect()
+        paint.getTextBounds(text, 0, text.length, bounds)
+
+        // Создаём Drawable и реализуем ВСЕ обязательные методы
+        val icon = object : android.graphics.drawable.Drawable() {
+            override fun draw(canvas: android.graphics.Canvas) {
+                canvas.drawText(text, 0f, bounds.height().toFloat(), paint)
+            }
+
+            override fun getIntrinsicWidth(): Int = bounds.width()
+
+            override fun getIntrinsicHeight(): Int = bounds.height()
+
+            // Эти три метода обязательно нужно добавить, чтобы убрать ошибку компиляции
+            override fun getOpacity(): Int = android.graphics.PixelFormat.OPAQUE
+
+            override fun setAlpha(alpha: Int) {
+                // Для простого текста можно игнорировать прозрачность или менять alpha у paint
+                paint.alpha = alpha
+            }
+
+            override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) {
+                // Если нужен цветовой фильтр — применяем к paint, иначе игнорируем
+                paint.colorFilter = colorFilter
+            }
+        }
+
+        (editText.parent as? com.google.android.material.textfield.TextInputLayout)?.apply {
+            endIconDrawable = icon
+            endIconContentDescription = text
+        }
+    }
+
+
 
     private fun loadPrices() {
         fun Double?.format(): String =

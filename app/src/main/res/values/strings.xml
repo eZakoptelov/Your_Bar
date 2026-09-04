@@ -72,6 +72,8 @@
 
     <string name="aisi304_weight_line">AISI 304: %s кг</string>
     <string name="aisi430_weight_line">AISI 430: %s кг</string>
+    <string name="delete">Удалить</string>
+    <string name="Enter_price">Введите цену</string>
 
 
 </resources>
