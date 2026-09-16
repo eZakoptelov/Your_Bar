@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Полка для блендера"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Высота всех полок — 300 мм (развёртка 310), глубина — 220 мм (развёртка 230)"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ширина полки:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/rgShelfWidth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbShelfNone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Без полки"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbShelf500"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="500 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbShelf400"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="400 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbShelf300"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="300 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnApplyShelf"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Применить"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="50dp" />
+
+</LinearLayout>

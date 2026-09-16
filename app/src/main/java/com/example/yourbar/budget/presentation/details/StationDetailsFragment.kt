@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yourbar.R
+import com.example.yourbar.budget.domain.calculator.models.SolidSinkType
 import com.example.yourbar.budget.domain.calculator.models.SteelType
 import com.example.yourbar.budget.domain.calculator.usecase.GetStationDetailsUseCase
 import com.example.yourbar.cart.domain.CartItem
@@ -34,10 +35,11 @@ class StationDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // --- СКРЫВАЕМ BOTTOM NAV ---
-        val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_nav)
+        val bottomNav =
+            requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(
+                R.id.bottom_nav
+            )
         bottomNav.visibility = View.GONE
-        // -------------------------
 
         binding.rvParts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvParts.adapter = adapter
@@ -62,27 +64,23 @@ class StationDetailsFragment : Fragment() {
             else -> SteelType.AISI_430
         }
 
-        val additionalPocketsCount = (item.pocketsCount - 1).coerceAtLeast(0)
-
         val parts = getDetailsUseCase.execute(
             widthMm = item.widthMm,
             depthMm = item.depthMm,
             steelType = steelType,
             thicknessMm = item.thicknessMm,
-            additionalPocketsCount = additionalPocketsCount
+            pocketCount = item.pocketsCount,
+            pocketHeightMm = item.pocketHeightMm,
+            isShelfAdded = item.isBlenderShelfAdded,
+            blenderShelfWidthMm = item.blenderShelfWidthMm,
+            faucetHoleCount = item.faucetHoleCount,
+            backBoardCount = item.backBoardCount,
+            adjustableLegCount = item.adjustableLegCount,
+            solidSinkType = SolidSinkType.valueOf(item.solidSinkType)
         )
 
         adapter.submitList(parts)
         binding.tvEmptyState.visibility = if (parts.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // --- ВОЗВРАЩАЕМ BOTTOM NAV ---
-        val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(
-            R.id.bottom_nav)
-        bottomNav.visibility = View.VISIBLE
-        // -----------------------------
-        _binding = null
-    }
 }

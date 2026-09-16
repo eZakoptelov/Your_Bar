@@ -9,8 +9,10 @@ import com.example.yourbar.databinding.ItemCartBinding
 
 class CartAdapter(
     private val onRemove: (String) -> Unit,
-    private val onClick: (CartItem) -> Unit
+    private val onClick: (CartItem) -> Unit,
+    private val getSinkPrice: (CartItem) -> Double
 ) : ListAdapter<CartItem, CartAdapter.ViewHolder>(CartDiffCallback) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCartBinding.inflate(
@@ -36,17 +38,48 @@ class CartAdapter(
                 append("  |  Толщина: ${item.thicknessMm} мм")
                 append("  |  Карманов: ${item.pocketsCount}")
                 append("\nТруба 25×25: ${"%.1f".format(item.pipeMeters)} мп")
+                if (item.faucetHoleCount > 0) append("\nОтверстий для смесителя: ${item.faucetHoleCount} шт")
+                if (item.backBoardCount > 0) append("\nЗадний борт: ${item.backBoardCount} шт")
+                if (item.adjustableLegCount > 0) append("\nРегулируемые опоры: ${item.adjustableLegCount} шт")
+                if (item.solidSinkType != "NONE") {
+                    val sinkLabel = when (item.solidSinkType) {
+                        "SINK_400x400" -> "400×400"
+                        "SINK_400x500" -> "400×500"
+                        "SINK_500x500" -> "500×500"
+                        "SINK_500x400" -> "500×400"
+                        else -> item.solidSinkType
+                    }
+                    val price = getSinkPrice(item)
+                    append("\nЦельнотянутая мойка: $sinkLabel мм ")
+                }
+
             }
 
-            // Сначала AISI 430, потом AISI 304
             binding.tvWeightAisi430.text = "AISI 430: ${"%.1f".format(item.weightAisi430Kg)} кг"
             binding.tvWeightAisi304.text = "AISI 304: ${"%.1f".format(item.weightAisi304Kg)} кг"
+
+            if (item.isBlenderShelfAdded) {
+                binding.tvShelfStatus.text = "Полка для блендера: включена"
+                binding.tvShelfStatus.setTextColor(
+                    androidx.core.content.ContextCompat.getColor(
+                        itemView.context,
+                        com.example.yourbar.R.color.color_gray_inactive
+                    )
+                )
+            } else {
+                binding.tvShelfStatus.text = "Полка для блендера: не включена"
+                binding.tvShelfStatus.setTextColor(
+                    androidx.core.content.ContextCompat.getColor(
+                        itemView.context,
+                        android.R.color.darker_gray
+                    )
+                )
+            }
 
             binding.btnRemoveItem.setOnClickListener { onRemove(item.id) }
             itemView.setOnClickListener { onClick(item) }
         }
     }
-
 
     object CartDiffCallback : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =

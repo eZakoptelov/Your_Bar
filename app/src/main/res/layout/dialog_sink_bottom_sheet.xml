@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Цельнотянутая мойка"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Высота всех моек — 250 мм"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Размер мойки (ширина × глубина):"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/rgSinkType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbSinkNone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Без цельнотянутой мойки"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbSink400x400"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="400×400 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbSink400x500"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="400×500 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbSink500x500"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="500×500 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rbSink500x400"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="500×400 мм"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:buttonTint="@color/black" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvSinkWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:textColor="@color/Crimson"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnApplySink"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Применить"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="50dp" />
+
+</LinearLayout>

@@ -9,5 +9,12 @@ data class CalculationResult(
     val insertWeightKg: Double,      // Масса вставки
     val partitionsWeightKg: Double,  // Масса перегородок
     val weightAisi304Kg: Double,     // Масса деталей из AISI 304
-    val weightAisi430Kg: Double      // Масса деталей из AISI 430
+    val weightAisi430Kg: Double,      // Масса деталей из AISI 430
+    val blenderShelfWeightKg: Double = 0.0,    // Полка для блендера
+    val insulationAreaSqM: Double = 0.0,   //теплоизоляция
+    val faucetHoleCount: Int = 0, // Отверстие для смесителя
+    val backBoardCount: Int = 0, // Борт
+    val adjustableLegCount: Int = 0, //Опора регулируемая
+    val pocketHeightMm: Int = 260, // Высота кармана
+    val solidSinkType: SolidSinkType = SolidSinkType.NONE // Цельнотянутая мойка
 )
