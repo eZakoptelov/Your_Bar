@@ -6,48 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Кнопка сохранить — закреплена внизу -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_save_prices"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/btn_steel_shiny"
-        android:letterSpacing="0.08"
-        android:text="@string/save"
-        android:textColor="#1F2937"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="#40000000" />
-
-    <!-- Статус сохранения — над кнопкой -->
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_save_prices"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Скролл-зона: всё, кроме кнопки и статуса -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvStatus">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -92,27 +57,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceAisi304"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceAisi304"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 2: AISI 430 -->
@@ -139,27 +100,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceAisi430"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceAisi430"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 3: Труба 25x25 -->
@@ -186,27 +143,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPricePipe25"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPricePipe25"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 4: Труба 40x40 -->
@@ -233,27 +186,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPricePipe40"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPricePipe40"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 5: Теплоизоляция -->
@@ -280,27 +229,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceInsulation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceInsulation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 6: Отверстие под смеситель -->
@@ -327,27 +272,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceFaucetHole"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceFaucetHole"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 7: Задний борт -->
@@ -374,27 +315,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceBackBoard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceBackBoard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 8: Регулируемая опора -->
@@ -421,28 +358,25 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceAdjustableLeg"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceAdjustableLeg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
+
             <!-- Строка 9: Цельнотянутая мойка 400×400, высота 250 -->
             <LinearLayout
                 android:id="@+id/rowSink400x400"
@@ -467,27 +401,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceSink400x400"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceSink400x400"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 10: Цельнотянутая мойка 400×500, высота 250 -->
@@ -514,27 +444,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceSink400x500"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceSink400x500"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 11: Цельнотянутая мойка 500×500, высота 250 -->
@@ -561,27 +487,23 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceSink500x500"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceSink500x500"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <!-- Строка 12: Цельнотянутая мойка 500×400, высота 250 -->
@@ -608,29 +530,24 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etPriceSink500x400"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:suffixText="₽"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPriceSink500x400"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="@string/Enter_price"
-                        android:textStyle="bold"
-                        android:textColor="@color/Crimson"
-                        android:textSize="18sp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:hint="@string/Enter_price"
+                    android:textStyle="bold"
+                    android:textColor="@color/Crimson"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_edit_text_underline"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

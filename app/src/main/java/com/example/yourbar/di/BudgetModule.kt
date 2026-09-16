@@ -1,4 +1,4 @@
-package com.example.yourbar.budget.di
+package com.example.yourbar.di
 
 import com.example.yourbar.budget.data.calculator.CalculatorRepository
 import com.example.yourbar.budget.data.price.PriceRepository

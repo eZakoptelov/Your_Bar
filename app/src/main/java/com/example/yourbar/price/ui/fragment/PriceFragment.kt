@@ -1,17 +1,18 @@
 package com.example.yourbar.price.ui.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.yourbar.R
+import androidx.lifecycle.lifecycleScope
 import com.example.yourbar.budget.data.price.PriceRepository
 import com.example.yourbar.databinding.FragmentPriceBinding
 import com.example.yourbar.price.domain.models.BudgetPrices
-import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.text.DecimalFormat
 
@@ -21,6 +22,8 @@ class PriceFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val priceRepository: PriceRepository by inject()
+
+    private var isLoading = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,26 +39,38 @@ class PriceFragment : Fragment() {
 
         loadPricesIntoFields()
 
-        setRubleEndIcon(binding.etPriceAisi304)
-        setRubleEndIcon(binding.etPriceAisi430)
-        setRubleEndIcon(binding.etPricePipe25)
-        setRubleEndIcon(binding.etPricePipe40)
-        setRubleEndIcon(binding.etPriceInsulation)
-        setRubleEndIcon(binding.etPriceFaucetHole)
-        setRubleEndIcon(binding.etPriceBackBoard)
-        setRubleEndIcon(binding.etPriceAdjustableLeg)
-        setRubleEndIcon(binding.etPriceSink400x400)
-        setRubleEndIcon(binding.etPriceSink400x500)
-        setRubleEndIcon(binding.etPriceSink500x500)
-        setRubleEndIcon(binding.etPriceSink500x400)
+        setupAutoSave(
+            binding.etPriceAisi304,
+            binding.etPriceAisi430,
+            binding.etPricePipe25,
+            binding.etPricePipe40,
+            binding.etPriceInsulation,
+            binding.etPriceFaucetHole,
+            binding.etPriceBackBoard,
+            binding.etPriceAdjustableLeg,
+            binding.etPriceSink400x400,
+            binding.etPriceSink400x500,
+            binding.etPriceSink500x500,
+            binding.etPriceSink500x400
+        )
+    }
 
+    private fun setupAutoSave(vararg fields: android.widget.EditText) {
+        fields.forEach { field ->
+            field.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-        binding.btnSavePrices.setOnClickListener {
-            savePrices()
+                override fun afterTextChanged(s: Editable?) {
+                    if (isLoading) return
+                    savePrices()
+                }
+            })
         }
     }
 
     private fun loadPricesIntoFields() {
+        isLoading = true
         val prices = priceRepository.load()
 
         binding.etPriceAisi304.setText(prices.aisi304PerKg.toCleanString())
@@ -71,6 +86,7 @@ class PriceFragment : Fragment() {
         binding.etPriceSink500x500.setText(prices.sink500x500PerPiece.toCleanString())
         binding.etPriceSink500x400.setText(prices.sink500x400PerPiece.toCleanString())
 
+        isLoading = false
     }
 
     private fun savePrices() {
@@ -82,60 +98,21 @@ class PriceFragment : Fragment() {
             insulationPerM2 = binding.etPriceInsulation.text.toString().toDoubleOrNull() ?: 0.0,
             faucetHolePerPiece = binding.etPriceFaucetHole.text.toString().toDoubleOrNull() ?: 0.0,
             backBoardPerPiece = binding.etPriceBackBoard.text.toString().toDoubleOrNull() ?: 0.0,
-            adjustableLegPerPiece = binding.etPriceAdjustableLeg.text.toString().toDoubleOrNull()
-                ?: 0.0,
-            sink400x400PerPiece = binding.etPriceSink400x400.text.toString().toDoubleOrNull()
-                ?: 0.0,
-            sink400x500PerPiece = binding.etPriceSink400x500.text.toString().toDoubleOrNull()
-                ?: 0.0,
+            adjustableLegPerPiece = binding.etPriceAdjustableLeg.text.toString().toDoubleOrNull() ?: 0.0,
+            sink400x400PerPiece = binding.etPriceSink400x400.text.toString().toDoubleOrNull() ?: 0.0,
+            sink400x500PerPiece = binding.etPriceSink400x500.text.toString().toDoubleOrNull() ?: 0.0,
             sink500x500PerPiece = binding.etPriceSink500x500.text.toString().toDoubleOrNull() ?: 0.0,
             sink500x400PerPiece = binding.etPriceSink500x400.text.toString().toDoubleOrNull() ?: 0.0
+        )
 
-            )
-
-        priceRepository.save(prices)
-        showStatus("Цены сохранены!", true)
-        Toast.makeText(requireContext(), "Цены сохранены", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setRubleEndIcon(editText: TextInputEditText) {
-        val text = "₽"
-        val paint = android.graphics.Paint()
-        paint.color = ContextCompat.getColor(requireContext(), android.R.color.darker_gray)
-        paint.textSize = editText.textSize
-        paint.isAntiAlias = true
-
-        val bounds = android.graphics.Rect()
-        paint.getTextBounds(text, 0, text.length, bounds)
-
-        val icon = object : android.graphics.drawable.Drawable() {
-            override fun draw(canvas: android.graphics.Canvas) {
-                canvas.drawText(text, 0f, bounds.height().toFloat(), paint)
-            }
-
-            override fun getIntrinsicWidth(): Int = bounds.width()
-            override fun getIntrinsicHeight(): Int = bounds.height()
-            override fun getOpacity(): Int = android.graphics.PixelFormat.OPAQUE
-
-            override fun setAlpha(alpha: Int) {
-                paint.alpha = alpha
-            }
-
-            override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) {
-                paint.colorFilter = colorFilter
-            }
-        }
-
-        (editText.parent as? com.google.android.material.textfield.TextInputLayout)?.apply {
-            endIconDrawable = icon
-            endIconContentDescription = text
+        lifecycleScope.launch(Dispatchers.IO) {
+            priceRepository.save(prices)
         }
     }
 
-    private fun showStatus(text: String, isSuccess: Boolean) {
-        binding.tvStatus.text = text
-        val resId = if (isSuccess) R.color.status_success else R.color.status_error
-        binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), resId))
+    override fun onPause() {
+        super.onPause()
+        _binding?.let { savePrices() }
     }
 
     private fun Double.toCleanString(): String {

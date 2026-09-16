@@ -76,7 +76,7 @@ class StationDetailsFragment : Fragment() {
             faucetHoleCount = item.faucetHoleCount,
             backBoardCount = item.backBoardCount,
             adjustableLegCount = item.adjustableLegCount,
-            solidSinkType = SolidSinkType.valueOf(item.solidSinkType)
+            solidSinkType = SolidSinkType.valueOf(item.solidSinkType ?: "NONE")
         )
 
         adapter.submitList(parts)

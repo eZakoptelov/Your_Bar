@@ -1,11 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.parcelize)
-
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
-
-
 
 android {
     namespace = "com.example.yourbar"
@@ -13,20 +11,34 @@ android {
 
     defaultConfig {
         applicationId = "com.example.yourbar"
-        minSdk = 24
+        minSdk = 29
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        // можно оставить пустым или добавить release
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
     }
+
+    // Единый источник истины для JVM target
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         viewBinding = true
@@ -52,13 +64,11 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-
-
+    annotationProcessor(libs.glide.compiler)
 
     // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
-    //  implementation(libs.koin.androidx.viewmodel)
 
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -67,4 +77,12 @@ dependencies {
     //  Fragment и Core
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
+
+    // Корутины
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Библиотека Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 }
