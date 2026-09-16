@@ -418,7 +418,7 @@ class BudgetCalculatorFragment : Fragment() {
             // ── Полка для блендера ──
             if (blenderShelfWidthMm > 0) {
                 binding.tvBlenderShelfWeight.text =
-                    "Полка для блендера:Ширина ${blenderShelfWidthMm} - ${DecimalFormat("0.##").format(result.blenderShelfWeightKg)} кг"
+                    "Полка для блендера:Ширина ${blenderShelfWidthMm} мм- ${DecimalFormat("0.##").format(result.blenderShelfWeightKg)} кг"
                 binding.tvBlenderShelfWeight.visibility = View.VISIBLE
             } else {
                 binding.tvBlenderShelfWeight.visibility = View.GONE
@@ -611,8 +611,8 @@ class BudgetCalculatorFragment : Fragment() {
                 return "Мойка ${type.label} не влезет по глубине (нужно ${type.depthMm + 100} мм, станция $depthMm мм)"
             }
 
-            if (type.widthMm + 100 >= widthMm) {
-                return "Мойка ${type.label} не влезет по ширине (нужно ${type.widthMm + 100} мм, станция $widthMm мм)"
+            if (type.widthMm + 150 >= widthMm) {
+                return "Мойка ${type.label} не влезет по ширине (нужно ${type.widthMm + 120} мм, станция $widthMm мм)"
             }
 
             return null

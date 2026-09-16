@@ -28,7 +28,7 @@ data class CartItem(
     val adjustableLegCount: Int = 0,                 // ← новая опора
     val adjustableLegPricePerUnit: Double = 0.0,  // ← цена за штуку
     val pocketHeightMm: Int = 260,
-    val solidSinkType: String = "NONE",
+    val solidSinkType: String? = "NONE",
     val solidSinkPrice: Double = 0.0
 ) : Parcelable {
     val displayName: String

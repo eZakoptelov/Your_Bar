@@ -61,7 +61,8 @@ class CalculateBudgetUseCase {
             val areaFront = (pocketWidthMm / 1000.0) * (POCKET_FRONT_H / 1000.0)
             val areaBack = (pocketWidthMm / 1000.0) * (pocketBackH / 1000.0)
             val areaBottom = (pocketWidthMm / 1000.0) * (POCKET_DEPTH / 1000.0)
-            val areaSides = 2 * ((pocketBackH / 1000.0) * (POCKET_DEPTH / 1000.0))
+            val sideH = pocketBackH - 10
+            val areaSides = 2 * ((sideH / 1000.0) * (POCKET_DEPTH / 1000.0))
 
             val totalAreaPerPocket = areaFront + areaBack + areaBottom + areaSides
             val volPerPocket = totalAreaPerPocket * (POCKET_THICK / 1000.0)
@@ -78,7 +79,7 @@ class CalculateBudgetUseCase {
         val solidSink = params.solidSinkType
 
         val sinkW = if (solidSink != SolidSinkType.NONE) {
-            params.widthMm - solidSink.widthMm - 100
+            params.widthMm - solidSink.widthMm - 120
         } else {
             params.widthMm - SINK_REDUCE_W
         }
@@ -120,12 +121,18 @@ class CalculateBudgetUseCase {
 
         val weightPartitions = weightPart12 + weightPart3
 
-        // 6. Полка для блендера — ширина берётся из params
+        // 6. Полка для блендера
         val shelfWidthMm = params.blenderShelfWidthMm
         val blenderShelfWeight = if (params.isShelfAdded && shelfWidthMm > 0) {
-            val shelfAreaM2 = (shelfWidthMm * SHELF_DEPTH + shelfWidthMm * SHELF_HEIGHT) / 1_000_000.0
+            val shelfSideH = SHELF_HEIGHT - 10   // 300
+            val shelfSideD = SHELF_DEPTH - 10    // 220
+            // Две треугольные боковушки, каждая — прямоугольный треугольник: (h × d) / 2
+            val sideTrianglesArea = 2.0 * ((shelfSideH * shelfSideD) / 2.0)
+
+            val shelfAreaM2 = (shelfWidthMm * SHELF_DEPTH + shelfWidthMm * SHELF_HEIGHT + sideTrianglesArea) / 1_000_000.0
             shelfAreaM2 * (SHELF_THICK / 1000.0) * DENSITY_AISI_430
         } else 0.0
+
 
         // Суммирование по маркам стали
         var total304 = 0.0

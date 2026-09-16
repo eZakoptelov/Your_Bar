@@ -11,9 +11,13 @@
         android:icon="@drawable/ic_shopping_cart_2"
         android:title="@string/Cart" />
 
-    <!-- Новый пункт: Цена -->
     <item
         android:id="@+id/dest_price"
         android:icon="@drawable/ic_price"
         android:title="@string/price_label" />
+    <item
+        android:id="@+id/dest_work_price"
+        android:icon="@drawable/ic_work_price"
+        android:title="@string/work_price" />
+
 </menu>

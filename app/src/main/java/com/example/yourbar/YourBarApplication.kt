@@ -1,10 +1,12 @@
 package com.example.yourbar
 
 import android.app.Application
-import com.example.yourbar.di.appModule
-import com.example.yourbar.budget.di.budgetModule
-import com.example.yourbar.budget.di.calculatorModule
+import com.example.yourbar.di.budgetModule
+import com.example.yourbar.di.calculatorModule
 import com.example.yourbar.cart.di.cartModule
+import com.example.yourbar.di.databaseModule
+import com.example.yourbar.di.priceModule
+import com.example.yourbar.di.workPriceModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -16,10 +18,12 @@ class YourBarApplication : Application() {
         startKoin {
             androidContext(this@YourBarApplication)
             modules(
-                appModule,
+                databaseModule,
                 budgetModule,
                 cartModule,
-                calculatorModule
+                calculatorModule,
+                workPriceModule,
+                priceModule
             )
         }
     }

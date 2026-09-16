@@ -53,7 +53,9 @@ object StationPartsBuilder {
             parts.add(
                 StationPart(
                     title = "Карман для бутылок",
-                    dimensions = "${pocketWidthMm}×${POCKET_FRONT_H}×${POCKET_DEPTH} мм\n(задняя стенка ${params.pocketHeightMm} мм)",
+                    dimensions = "${pocketWidthMm}×${POCKET_FRONT_H}×${POCKET_DEPTH} мм\n" +
+                            "Задняя стенка ${params.pocketHeightMm} мм\n" +
+                            "Боковые стенки: 2 шт × ${params.pocketHeightMm - 10}×${POCKET_DEPTH} мм",
                     steelType = "AISI 430",
                     thicknessMm = POCKET_THICK,
                     weightKg = pocketWeight,
@@ -62,9 +64,10 @@ object StationPartsBuilder {
             )
         }
 
+
         // ── 3. Корпус мойки ──
         val sinkW = if (params.solidSinkType != SolidSinkType.NONE) {
-            params.widthMm - params.solidSinkType.widthMm - 100
+            params.widthMm - params.solidSinkType.widthMm - 120
         } else {
             params.widthMm - SINK_REDUCE_W
         }
@@ -88,13 +91,14 @@ object StationPartsBuilder {
                 StationPart(
                     title = "Цельнотянутая мойка",
                     dimensions = "${ss.widthMm}×${ss.depthMm}×${ss.heightMm} мм",
-                    steelType = "AISI 304",
-                    thicknessMm = 1.0,
+                    steelType = "—",
+                    thicknessMm = 0.0,
                     weightKg = 0.0,
                     quantity = 1
                 )
             )
         }
+
 
         // ── 4. Перфорированная вставка ──
         val insW = params.widthMm - SINK_REDUCE_W
@@ -135,10 +139,14 @@ object StationPartsBuilder {
 
         // ── 6. Полка для блендера ──
         if (params.isShelfAdded && result.blenderShelfWeightKg > 0.0) {
+            val shelfSideH = SHELF_HEIGHT - 10
+            val shelfSideD = SHELF_DEPTH - 10
+
             parts.add(
                 StationPart(
                     title = "Полка для блендера",
-                    dimensions = "${params.blenderShelfWidthMm}×${SHELF_DEPTH}×${SHELF_HEIGHT} мм",
+                    dimensions = "${params.blenderShelfWidthMm}×${SHELF_DEPTH}×${SHELF_HEIGHT} мм\n" +
+                            "боковые стенки: 2 шт × ${shelfSideH}×${shelfSideD} мм (треугольник)",
                     steelType = "AISI 430",
                     thicknessMm = SHELF_THICK,
                     weightKg = result.blenderShelfWeightKg,
@@ -146,6 +154,7 @@ object StationPartsBuilder {
                 )
             )
         }
+
 
         // ── 7. Теплоизоляция ──
         if (result.insulationAreaSqM > 0.0) {

@@ -25,6 +25,12 @@
         android:label="Цена"
         tools:layout="@layout/fragment_price" />
 
+    <fragment
+        android:id="@+id/dest_work_price"
+        android:name="com.example.yourbar.workprice.presentation.fragment.WorkPriceFragment"
+        android:label="Прайс работ"
+        tools:layout="@layout/fragment_work_price" />
+
 
     <!-- Фрагменты вкладок (Budget, Premium, Perfectum, Exclusive) -->
     <fragment

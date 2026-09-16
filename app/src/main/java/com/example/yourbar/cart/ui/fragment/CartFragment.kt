@@ -1,6 +1,5 @@
 package com.example.yourbar.cart.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yourbar.R
+import com.example.yourbar.budget.data.price.PriceRepository
 import com.example.yourbar.cart.data.CartRepository
 import com.example.yourbar.cart.domain.CartItem
 import com.example.yourbar.cart.ui.adapter.CartAdapter
@@ -26,27 +26,10 @@ class CartFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val cartRepository: CartRepository by inject()
+    private val priceRepository: PriceRepository by inject()
     private lateinit var adapter: CartAdapter
 
-    private lateinit var sharedPreferences: android.content.SharedPreferences
-
     private var markupPercent = 0.0
-
-    companion object {
-        private const val PREF_NAME = "prices_settings"
-        private const val KEY_AISI304 = "price_aisi304"
-        private const val KEY_AISI430 = "price_aisi430"
-        private const val KEY_PIPE25 = "price_pipe25"
-        private const val KEY_PIPE40 = "price_pipe40"
-        private const val KEY_INSULATION = "price_insulation"
-        private const val KEY_FAUCET_HOLE = "price_faucet_hole"
-        private const val KEY_BACK_BOARD = "price_back_board"
-        private const val KEY_ADJUSTABLE_LEG = "price_adjustable_leg"
-        private const val KEY_SINK_400x400 = "price_sink_400x400"
-        private const val KEY_SINK_400x500 = "price_sink_400x500"
-        private const val KEY_SINK_500x500 = "price_sink_500x500"
-        private const val KEY_SINK_500x400 = "price_sink_500x400"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,8 +43,6 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
         adapter = CartAdapter(
             onRemove = { id -> cartRepository.remove(id) },
             onClick = { item ->
@@ -71,11 +52,13 @@ class CartFragment : Fragment() {
                 findNavController().navigate(R.id.stationDetailsFragment, bundle)
             },
             getSinkPrice = { item ->
+                val prices = getPrices()
                 when (item.solidSinkType) {
-                    "SINK_400x400" -> getPrices().sink400x400
-                    "SINK_400x500" -> getPrices().sink400x500
-                    "SINK_500x500" -> getPrices().sink500x500
-                    "SINK_500x400" -> getPrices().sink500x400
+                    "SINK_400x400" -> prices.sink400x400
+                    "SINK_400x500" -> prices.sink400x500
+                    "SINK_500x500" -> prices.sink500x500
+                    "SINK_500x400" -> prices.sink500x400
+                    null -> 0.0
                     else -> 0.0
                 }
             }
@@ -110,22 +93,22 @@ class CartFragment : Fragment() {
     }
 
     private fun getPrices(): Prices {
+        val p = priceRepository.load()
         return Prices(
-            aisi304 = sharedPreferences.getFloat(KEY_AISI304, 0f).toDouble(),
-            aisi430 = sharedPreferences.getFloat(KEY_AISI430, 0f).toDouble(),
-            pipe25 = sharedPreferences.getFloat(KEY_PIPE25, 0f).toDouble(),
-            pipe40 = sharedPreferences.getFloat(KEY_PIPE40, 0f).toDouble(),
-            insulation = sharedPreferences.getFloat(KEY_INSULATION, 0f).toDouble(),
-            faucetHole = sharedPreferences.getFloat(KEY_FAUCET_HOLE, 0f).toDouble(),
-            backBoard = sharedPreferences.getFloat(KEY_BACK_BOARD, 0f).toDouble(),
-            adjustableLeg = sharedPreferences.getFloat(KEY_ADJUSTABLE_LEG, 0f).toDouble(),
-            sink400x400 = sharedPreferences.getFloat(KEY_SINK_400x400, 0f).toDouble(),
-            sink400x500 = sharedPreferences.getFloat(KEY_SINK_400x500, 0f).toDouble(),
-            sink500x500 = sharedPreferences.getFloat(KEY_SINK_500x500, 0f).toDouble(),
-            sink500x400 = sharedPreferences.getFloat(KEY_SINK_500x400, 0f).toDouble()
+            aisi304 = p.aisi304PerKg,
+            aisi430 = p.aisi430PerKg,
+            pipe25 = p.pipe25PerM,
+            pipe40 = p.pipe40PerM,
+            insulation = p.insulationPerM2,
+            faucetHole = p.faucetHolePerPiece,
+            backBoard = p.backBoardPerPiece,
+            adjustableLeg = p.adjustableLegPerPiece,
+            sink400x400 = p.sink400x400PerPiece,
+            sink400x500 = p.sink400x500PerPiece,
+            sink500x500 = p.sink500x500PerPiece,
+            sink500x400 = p.sink500x400PerPiece
         )
     }
-
 
     private fun calcItemPrice(item: CartItem, prices: Prices): Double {
         val solidSinkPrice = when (item.solidSinkType) {
@@ -133,6 +116,7 @@ class CartFragment : Fragment() {
             "SINK_400x500" -> prices.sink400x500
             "SINK_500x500" -> prices.sink500x500
             "SINK_500x400" -> prices.sink500x400
+            null -> 0.0
             else -> 0.0
         }
 
@@ -145,8 +129,6 @@ class CartFragment : Fragment() {
                 item.adjustableLegCount * prices.adjustableLeg +
                 solidSinkPrice
     }
-
-
 
     private fun updateTotal(items: List<CartItem>) {
         val prices = getPrices()
@@ -180,4 +162,3 @@ data class Prices(
     val sink500x500: Double,
     val sink500x400: Double
 )
-
