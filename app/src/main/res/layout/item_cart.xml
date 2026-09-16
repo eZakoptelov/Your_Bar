@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="8dp"
@@ -33,7 +34,7 @@
             android:textColor="#6B7280"
             android:textSize="14sp" />
 
-        <!-- Блок веса: две отдельные строки -->
+        <!-- Блок веса -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,6 +60,15 @@
                 android:textStyle="bold"
                 tools:text="AISI 304: 5.6 кг" />
         </LinearLayout>
+
+        <!-- Статус полки для блендера -->
+        <TextView
+            android:id="@+id/tvShelfStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textSize="14sp"
+            tools:text="Полка для блендера: включена" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRemoveItem"

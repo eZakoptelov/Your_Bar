@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="Ширина, мм:"
+            android:text="Ширина Барной станции, мм:"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -166,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Глубина, мм:"
+            android:text="Глубина Барной станции, мм:"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -200,7 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Высота, мм:"
+            android:text="Высота Барной станции, мм:"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -227,43 +227,148 @@
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Переключатель: убрать навесной карман -->
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/tbRemoveAdditionalPocket"
+        <!-- Кнопка: добавить полку для блендера -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddShelfForBlender"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/toggle_rounded_bg"
-            android:checked="false"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="34dp"
+            android:text="Добавить полку для блендера"
             android:textColor="@color/black"
-            android:textOff="Убрать навесной карман"
-            android:textOn="Вернуть навесной карман"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:cornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilHeight" />
+            app:layout_constraintTop_toBottomOf="@id/tilHeight"
+            app:rippleColor="?attr/colorControlHighlight" />
 
+        <!-- Переключатель: добавить/убрать навесной карман -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddAdditionalPocket"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="34dp"
+            android:text="Добавить навесной карман"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:cornerRadius="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAddShelfForBlender" />
+
+        <!-- Кнопка: добавить цельнотянутую мойку -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddSolidSink"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="34dp"
+            android:text="Добавить цельнотянутую мойку"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:cornerRadius="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAddAdditionalPocket"
+            app:rippleColor="?attr/colorControlHighlight" />
+
+
+        <!-- ── Отверстия для смесителя ── -->
+        <TextView
+            android:id="@+id/tvFaucetHolesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Отверстия для смесителя:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAddSolidSink" />
+
+        <Spinner
+            android:id="@+id/spFaucetHoles"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAddSolidSink" />
+
+        <!-- Задний борт (label) -->
+        <TextView
+            android:id="@+id/tvBackBoardLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Задний борт:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFaucetHolesLabel" />
+
+        <!-- Задний борт (spinner) -->
+        <Spinner
+            android:id="@+id/spBackBoard"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spFaucetHoles" />
+
+        <!-- Регулируемая опора (label) -->
+        <TextView
+            android:id="@+id/tvAdjustableLegLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Регулируемая опора:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBackBoardLabel" />
+
+        <!-- Регулируемая опора (spinner) -->
+        <Spinner
+            android:id="@+id/spAdjustableLeg"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spBackBoard" />
+
+        <!-- Кнопка: рассчитать -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculate"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/btn_steel_shiny"
             android:letterSpacing="0.08"
             android:text="@string/calculate"
-            android:textColor="#1F2937"
+            android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbRemoveAdditionalPocket" />
+            app:layout_constraintTop_toBottomOf="@id/tvAdjustableLegLabel"
+            app:rippleColor="?attr/colorControlHighlight" />
 
         <!-- Результат: общий вес -->
         <TextView
@@ -274,9 +379,9 @@
             android:layout_marginTop="10dp"
             android:text="Общий вес: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnCalculate" />
 
@@ -289,9 +394,9 @@
             android:layout_marginTop="4dp"
             android:text="Aisi 304: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvResult" />
 
@@ -304,9 +409,9 @@
             android:layout_marginTop="4dp"
             android:text="Aisi 430: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWeightAisi304" />
 
@@ -319,8 +424,8 @@
             android:layout_marginTop="26dp"
             android:text="Столешница: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWeightAisi430" />
 
@@ -333,8 +438,8 @@
             android:layout_marginTop="8dp"
             android:text="Карман для бутылок: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCountertopWeight" />
 
@@ -347,10 +452,24 @@
             android:layout_marginTop="8dp"
             android:text="Корпус мойки: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPocketWeightAddition" />
+
+        <!-- Цельнотянутая мойка (результат) -->
+        <TextView
+            android:id="@+id/tvSolidSinkResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Цельнотянутая мойка: —"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSinkWeight" />
 
         <!-- Вес перфорированной вставки -->
         <TextView
@@ -361,10 +480,10 @@
             android:layout_marginTop="8dp"
             android:text="Перфорированная вставка: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSinkWeight" />
+            app:layout_constraintTop_toBottomOf="@id/tvSolidSinkResult" />
 
         <!-- Вес съёмных перегородок -->
         <TextView
@@ -375,12 +494,68 @@
             android:layout_marginTop="8dp"
             android:text="Съёмные перегородки: — кг"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvInsertWeight" />
 
-        <!-- Результат трубы 25x25 (погонные метры) -->
+        <!-- Отверстия для смесителя (результат) -->
+        <TextView
+            android:id="@+id/tvFaucetHolesResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Отверстия для смесителя: — шт"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPartitionsWeight" />
+
+        <!-- Задний борт (результат) -->
+        <TextView
+            android:id="@+id/tvBackBoardResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Задний борт: — шт"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFaucetHolesResult" />
+
+        <!-- Результат: регулируемая опора -->
+        <TextView
+            android:id="@+id/tvAdjustableLegResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Регулируемая опора: — шт"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBackBoardResult" />
+
+        <!-- Вес полки для блендера -->
+        <TextView
+            android:id="@+id/tvBlenderShelfWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Полка для блендера: — кг"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAdjustableLegResult" />
+
+        <!-- Результат трубы 25x25 -->
         <TextView
             android:id="@+id/tvPipeResult"
             android:layout_width="wrap_content"
@@ -389,10 +564,10 @@
             android:layout_marginTop="8dp"
             android:text="Труба 25×25: — мп"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPartitionsWeight" />
+            app:layout_constraintTop_toBottomOf="@id/tvBlenderShelfWeight" />
 
         <!-- Кнопка: добавить в корзину -->
         <com.google.android.material.button.MaterialButton
@@ -413,7 +588,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPipeResult" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -28,18 +28,30 @@ class StationPartsAdapter :
 
         fun bind(part: StationPart) {
             binding.tvPartTitle.text = part.title
-            binding.tvPartDimensions.text = "Размеры: ${part.dimensions}"
-            binding.tvPartMaterial.text =
-                "Сталь: ${part.steelType}, толщина ${part.thicknessMm} мм"
-            binding.tvPartWeight.text = "Вес: ${"%.2f".format(part.totalWeightKg)} кг"
 
-            if (part.quantity > 1) {
-                binding.tvPartQuantity.visibility = View.VISIBLE
-                binding.tvPartQuantity.text = "Количество: ${part.quantity} шт"
-            } else {
+            if (part.steelType == "—") {
+                binding.tvPartDimensions.text = "Количество: ${part.quantity} шт"
+                binding.tvPartMaterial.visibility = View.GONE
+                binding.tvPartWeight.visibility = View.GONE
                 binding.tvPartQuantity.visibility = View.GONE
+            } else {
+                binding.tvPartDimensions.text = "Размеры: ${part.dimensions}"
+                binding.tvPartMaterial.visibility = View.VISIBLE
+                binding.tvPartMaterial.text =
+                    "Сталь: ${part.steelType}, толщина ${part.thicknessMm} мм"
+                binding.tvPartWeight.visibility = View.VISIBLE
+                binding.tvPartWeight.text = "Вес: ${"%.2f".format(part.totalWeightKg)} кг"
+
+                if (part.quantity > 1) {
+                    binding.tvPartQuantity.visibility = View.VISIBLE
+                    binding.tvPartQuantity.text = "Количество: ${part.quantity} шт"
+                } else {
+                    binding.tvPartQuantity.visibility = View.GONE
+                }
             }
         }
+
+
     }
 }
 

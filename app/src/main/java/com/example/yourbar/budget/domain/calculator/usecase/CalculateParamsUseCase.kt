@@ -3,6 +3,7 @@ package com.example.yourbar.budget.domain.calculator.usecase
 import com.example.yourbar.budget.data.calculator.CalculatorRepository
 import com.example.yourbar.budget.domain.calculator.models.CalculationInputParams
 import com.example.yourbar.budget.domain.calculator.models.CalculationResult
+import com.example.yourbar.budget.domain.calculator.models.SolidSinkType
 import com.example.yourbar.budget.domain.calculator.models.SteelType
 
 class CalculateParamsUseCase(
@@ -13,14 +14,28 @@ class CalculateParamsUseCase(
         depthMm: Int,
         steelType: SteelType,
         thicknessMm: Double,
-        additionalPocketsCount: Int
+        pocketCount: Int = 0,
+        pocketHeightMm: Int = 260,
+        isShelfAdded: Boolean = false,
+        blenderShelfWidthMm: Int = 500,
+        faucetHoleCount: Int = 0,
+        backBoardCount: Int = 0,
+        adjustableLegCount: Int = 0,
+        solidSinkType: SolidSinkType = SolidSinkType.NONE
     ): CalculationResult {
         val params = CalculationInputParams(
             widthMm = widthMm,
             depthMm = depthMm,
             steelType = steelType,
             thicknessMm = thicknessMm,
-            additionalPocketsCount = additionalPocketsCount
+            pocketCount = pocketCount,
+            pocketHeightMm = pocketHeightMm,
+            isShelfAdded = isShelfAdded,
+            blenderShelfWidthMm = blenderShelfWidthMm,
+            faucetHoleCount = faucetHoleCount,
+            backBoardCount = backBoardCount,
+            adjustableLegCount = adjustableLegCount,
+            solidSinkType = solidSinkType
         )
         return repository.calculate(params)
     }

@@ -1,6 +1,7 @@
 package com.example.yourbar.budget.di
 
 import com.example.yourbar.budget.data.calculator.CalculatorRepository
+import com.example.yourbar.budget.data.price.PriceRepository
 import com.example.yourbar.budget.domain.calculator.usecase.CalculateBudgetUseCase
 import com.example.yourbar.budget.domain.calculator.usecase.CalculatePipeMetersUseCase
 import com.example.yourbar.budget.domain.calculator.usecase.GetStationDetailsUseCase
@@ -13,6 +14,6 @@ val budgetModule = module {
     single { CalculatorRepository(get()) }
     single { CalculatePipeMetersUseCase() }
     factory { GetStationDetailsUseCase(get()) }
-
+    single { PriceRepository(get()) }
     viewModel { BudgetCalculatorViewModel(get()) }
 }
