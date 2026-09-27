@@ -1,27 +1,30 @@
 package com.example.yourbar.budget.presentation.calculator
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.yourbar.R
 import com.example.yourbar.budget.domain.calculator.models.CalculationResult
 import com.example.yourbar.budget.domain.calculator.models.SolidSinkType
 import com.example.yourbar.budget.domain.calculator.models.SteelType
 import com.example.yourbar.budget.domain.calculator.usecase.CalculateParamsUseCase
+import com.example.yourbar.budget.presentation.calculator.dialog.BlenderShelfBottomSheet
+import com.example.yourbar.budget.presentation.calculator.dialog.PocketBottomSheet
+import com.example.yourbar.budget.presentation.calculator.dialog.SinkBottomSheet
+import com.example.yourbar.budget.presentation.calculator.helper.AddToCartHelper
+import com.example.yourbar.budget.presentation.calculator.model.StationConfig
+import com.example.yourbar.budget.presentation.calculator.util.ButtonStateHelper
+import com.example.yourbar.budget.presentation.calculator.util.SpinnerSetup
 import com.example.yourbar.budget.presentation.viewmodel.BudgetCalculatorViewModel
 import com.example.yourbar.budget.presentation.viewmodel.BudgetUiState
-import com.example.yourbar.cart.domain.usecase.AddToCartUseCase
 import com.example.yourbar.databinding.FragmentBudgetCalculatorBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.text.DecimalFormat
 
@@ -32,26 +35,13 @@ class BudgetCalculatorFragment : Fragment() {
 
     private var lastResult: CalculationResult? = null
     private var lastPipeMeters: Double = 0.0
-    private var solidSinkType: SolidSinkType = SolidSinkType.NONE
-
-    private var pocketCount = 0           // 0, 1, 2
-    private var pocketHeightChoice = 0    // 0 = 260 мм (250 чистый), 1 = 210 мм (200 чистый)
-
-    private var blenderShelfWidthMm = 0   // 0 = полки нет, 300/400/500 = ширина
-
+    private val config = StationConfig()
 
     private lateinit var sharedPreferences: android.content.SharedPreferences
 
     private val calculateUseCase: CalculateParamsUseCase by inject()
-    private val addToCartUseCase: AddToCartUseCase by inject()
+    private val addToCartHelper: AddToCartHelper by inject()
     private val viewModel: BudgetCalculatorViewModel by inject()
-
-    companion object {
-        private const val PREF_NAME = "prices_settings"
-        private const val KEY_FAUCET_HOLE = "price_faucet_hole"
-        private const val KEY_BACK_BOARD = "price_back_board"
-        private const val KEY_ADJUSTABLE_LEG = "price_adjustable_leg"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,176 +55,38 @@ class BudgetCalculatorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireContext().getSharedPreferences("prices_settings", Context.MODE_PRIVATE)
 
-        setupPocketButton()
-        setupSinkButton()
-        setupBlenderShelfButton()
-        setupFaucetHolesSpinner()
-        setupBackBoardSpinner()
-        setupAdjustableLegSpinner()
+        setupSpinners()
         setupButtons()
         observeViewModel()
+        updateButtonStates()
     }
 
-    // ── UI setup ──────────────────────────────────────────
+    // ── Спиннеры ──────────────────────────────────────────
 
-    private fun setupPocketButton() {
-        updatePocketButtonState()
+    private fun setupSpinners() {
+        SpinnerSetup.setup(
+            binding.spFaucetHoles,
+            listOf("0 шт", "1 шт", "2 шт", "3 шт", "4 шт", "5 шт"),
+            requireContext()
+        ) { if (areFieldsFilled()) calculate() }
 
-        binding.btnAddAdditionalPocket.setOnClickListener {
-            showPocketBottomSheet()
-        }
+        SpinnerSetup.setup(
+            binding.spBackBoard,
+            listOf("0 шт", "1 шт", "2 шт", "3 шт"),
+            requireContext()
+        ) { if (areFieldsFilled()) calculate() }
+
+        SpinnerSetup.setup(
+            binding.spAdjustableLeg,
+            listOf("0 шт", "2 шт", "4 шт", "6 шт", "8 шт"),
+            requireContext()
+        ) { if (areFieldsFilled()) calculate() }
     }
 
-    private fun setupSinkButton() {
-        updateSinkButtonState()
-
-        binding.btnAddSolidSink.setOnClickListener {
-            showSinkBottomSheet()
-        }
-    }
-
-    private fun setupBlenderShelfButton() {
-        updateBlenderShelfButtonState()
-    }
-
-    private fun showPocketBottomSheet() {
-        val dialog = BottomSheetDialog(requireContext())
-        val sheetView = layoutInflater.inflate(R.layout.dialog_pockets_bottom_sheet, null)
-
-        val rgCount = sheetView.findViewById<RadioGroup>(R.id.rgPocketCount)
-        val rgHeight = sheetView.findViewById<RadioGroup>(R.id.rgPocketHeight)
-        val btnApply = sheetView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplyPockets)
-        val tvHeightLabel = sheetView.findViewById<android.widget.TextView>(R.id.tvHeightLabel)
-
-        rgCount.check(when (pocketCount) {
-            1 -> R.id.rbPocket1
-            2 -> R.id.rbPocket2
-            else -> R.id.rbPocket0
-        })
-
-        rgHeight.check(if (pocketHeightChoice == 0) R.id.rbHeight260 else R.id.rbHeight210)
-
-        fun updateHeightEnabled(enabled: Boolean) {
-            for (i in 0 until rgHeight.childCount) {
-                rgHeight.getChildAt(i).isEnabled = enabled
-            }
-            tvHeightLabel.alpha = if (enabled) 1f else 0.4f
-            rgHeight.alpha = if (enabled) 1f else 0.4f
-        }
-
-        updateHeightEnabled(pocketCount > 0)
-
-        rgCount.setOnCheckedChangeListener { _, checkedId ->
-            val count = when (checkedId) {
-                R.id.rbPocket1 -> 1
-                R.id.rbPocket2 -> 2
-                else -> 0
-            }
-            updateHeightEnabled(count > 0)
-        }
-
-        btnApply.setOnClickListener {
-            pocketCount = when (rgCount.checkedRadioButtonId) {
-                R.id.rbPocket1 -> 1
-                R.id.rbPocket2 -> 2
-                else -> 0
-            }
-            pocketHeightChoice = if (rgHeight.checkedRadioButtonId == R.id.rbHeight260) 0 else 1
-
-            updatePocketButtonState()
-
-            if (areFieldsFilled()) {
-                hideKeyboard()
-                calculate()
-            }
-            dialog.dismiss()
-        }
-
-        dialog.setContentView(sheetView)
-        dialog.show()
-    }
-
-    private fun updatePocketButtonState() {
-        val btn = binding.btnAddAdditionalPocket
-        if (pocketCount == 0) {
-            btn.text = "Добавить навесной карман"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_default)
-            )
-            btn.setTextColor(Color.BLACK)
-        } else {
-            val stationWidth = binding.etWidth.text.toString().trim().toIntOrNull() ?: 0
-            val pocketWidthMm = if (blenderShelfWidthMm > 0) {
-                maxOf(stationWidth - blenderShelfWidthMm, 0)
-            } else {
-                stationWidth
-            }
-            btn.text = "Карман: ${pocketCount} шт, ${pocketWidthMm} мм"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_added)
-            )
-            btn.setTextColor(Color.WHITE)
-        }
-    }
-
-
-    private fun getPocketHeightMm(): Int = if (pocketHeightChoice == 0) 260 else 210
-
-    private fun setupFaucetHolesSpinner() {
-        val options = listOf("0 шт", "1 шт", "2 шт", "3 шт", "4 шт", "5 шт")
-        binding.spFaucetHoles.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            options
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-        binding.spFaucetHoles.setSelection(0)
-        binding.spFaucetHoles.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (areFieldsFilled()) calculate()
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-    }
-
-    private fun setupBackBoardSpinner() {
-        val options = listOf("0 шт", "1 шт", "2 шт", "3 шт")
-        binding.spBackBoard.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            options
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-        binding.spBackBoard.setSelection(0)
-        binding.spBackBoard.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (areFieldsFilled()) calculate()
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-    }
-
-    private fun setupAdjustableLegSpinner() {
-        val options = listOf("0 шт", "2 шт", "4 шт", "6 шт", "8 шт")
-        binding.spAdjustableLeg.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            options
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-        binding.spAdjustableLeg.setSelection(0)
-        binding.spAdjustableLeg.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (areFieldsFilled()) calculate()
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        }
-    }
+    // ── Кнопки ────────────────────────────────────────────
 
     private fun setupButtons() {
         binding.btnCalculate.setOnClickListener {
@@ -242,17 +94,115 @@ class BudgetCalculatorFragment : Fragment() {
             calculate()
         }
         binding.btnAddToCart.setOnClickListener { addToCart() }
+
+        binding.btnAddAdditionalPocket.setOnClickListener {
+            PocketBottomSheet(
+                currentCount = config.pocketCount,
+                currentHeightChoice = config.pocketHeightChoice
+            ) { count, heightChoice ->
+                config.pocketCount = count
+                config.pocketHeightChoice = heightChoice
+                updateButtonStates()
+                if (areFieldsFilled()) {
+                    hideKeyboard()
+                    calculate()
+                }
+            }.show(requireContext())
+        }
+
+        binding.btnAddSolidSink.setOnClickListener {
+            val widthMm = binding.etWidth.text.toString().trim().toIntOrNull() ?: 0
+            val depthMm = binding.etDepth.text.toString().trim().toIntOrNull() ?: 0
+            SinkBottomSheet(
+                currentType = config.solidSinkType,
+                stationWidthMm = widthMm,
+                stationDepthMm = depthMm
+            ) { type ->
+                config.solidSinkType = type
+                updateButtonStates()
+                if (areFieldsFilled()) {
+                    hideKeyboard()
+                    calculate()
+                }
+            }.show(requireContext())
+        }
+
         binding.btnAddShelfForBlender.setOnClickListener {
-            showBlenderShelfBottomSheet()
+            BlenderShelfBottomSheet(
+                currentWidthMm = config.blenderShelfWidthMm
+            ) { widthMm ->
+                config.blenderShelfWidthMm = widthMm
+                updateButtonStates()
+                if (areFieldsFilled()) {
+                    hideKeyboard()
+                    calculate()
+                }
+            }.show(requireContext())
         }
     }
+
+    // ── Состояния кнопок ──────────────────────────────────
+
+    private fun updateButtonStates() {
+        updatePocketButton()
+        updateSinkButton()
+        updateShelfButton()
+    }
+
+    private fun updatePocketButton() {
+        val btn = binding.btnAddAdditionalPocket
+        if (config.pocketCount == 0) {
+            ButtonStateHelper.setDefault(btn, "Добавить навесной карман", requireContext())
+        } else {
+            val stationWidth = binding.etWidth.text.toString().trim().toIntOrNull() ?: 0
+            val pocketWidthMm = if (config.blenderShelfWidthMm > 0) {
+                maxOf(stationWidth - config.blenderShelfWidthMm, 0)
+            } else {
+                stationWidth
+            }
+            ButtonStateHelper.setAdded(
+                btn,
+                "Карман: ${config.pocketCount} шт, ${pocketWidthMm} мм",
+                requireContext()
+            )
+        }
+    }
+
+    private fun updateSinkButton() {
+        val btn = binding.btnAddSolidSink
+        if (config.solidSinkType == SolidSinkType.NONE) {
+            ButtonStateHelper.setDefault(btn, "Добавить цельнотянутую мойку", requireContext())
+        } else {
+            ButtonStateHelper.setAdded(
+                btn,
+                "Мойка: ${config.solidSinkType.label} мм",
+                requireContext()
+            )
+        }
+    }
+
+    private fun updateShelfButton() {
+        val btn = binding.btnAddShelfForBlender
+        if (config.blenderShelfWidthMm == 0) {
+            ButtonStateHelper.setDefault(btn, "Добавить полку для блендера", requireContext())
+        } else {
+            ButtonStateHelper.setAdded(
+                btn,
+                "Полка для блендера: ${config.blenderShelfWidthMm} мм",
+                requireContext()
+            )
+        }
+    }
+
+    // ── ViewModel ────────────────────────────────────────
 
     private fun observeViewModel() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 BudgetUiState.Idle -> binding.tvPipeResult.visibility = View.GONE
                 is BudgetUiState.Result -> {
-                    binding.tvPipeResult.text = "Труба 25×25: ${DecimalFormat("0.##").format(state.pipeMeters)} мп"
+                    binding.tvPipeResult.text =
+                        "Труба 25×25: ${DecimalFormat("0.##").format(state.pipeMeters)} мп"
                     lastPipeMeters = state.pipeMeters
                     binding.tvPipeResult.visibility = View.VISIBLE
                 }
@@ -264,68 +214,12 @@ class BudgetCalculatorFragment : Fragment() {
         }
     }
 
-    // ── Полка для блендера (Bottom Sheet) ─────────────────
-
-    private fun showBlenderShelfBottomSheet() {
-        val dialog = BottomSheetDialog(requireContext())
-        val sheetView = layoutInflater.inflate(R.layout.dialog_blender_shelf_bottom_sheet, null)
-
-        val rgShelfWidth = sheetView.findViewById<RadioGroup>(R.id.rgShelfWidth)
-        val btnApply = sheetView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplyShelf)
-
-        // Текущий выбор
-        rgShelfWidth.check(when (blenderShelfWidthMm) {
-            500 -> R.id.rbShelf500
-            400 -> R.id.rbShelf400
-            300 -> R.id.rbShelf300
-            else -> R.id.rbShelfNone
-        })
-
-        btnApply.setOnClickListener {
-            blenderShelfWidthMm = when (rgShelfWidth.checkedRadioButtonId) {
-                R.id.rbShelf500 -> 500
-                R.id.rbShelf400 -> 400
-                R.id.rbShelf300 -> 300
-                else -> 0
-            }
-
-            updateBlenderShelfButtonState()
-            updatePocketButtonState()
-
-            if (areFieldsFilled()) {
-                hideKeyboard()
-                calculate()
-            }
-            dialog.dismiss()
-        }
-
-        dialog.setContentView(sheetView)
-        dialog.show()
-    }
-
-    private fun updateBlenderShelfButtonState() {
-        val btn = binding.btnAddShelfForBlender
-        if (blenderShelfWidthMm == 0) {
-            btn.text = "Добавить полку для блендера"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_default)
-            )
-            btn.setTextColor(Color.BLACK)
-        } else {
-            btn.text = "Полка для блендера: ${blenderShelfWidthMm} мм"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_added)
-            )
-            btn.setTextColor(Color.WHITE)
-        }
-    }
-
-
-    // ── Расчёт ────────────────────────────────────────────
+    // ── Расчёт ───────────────────────────────────────────
 
     private fun getFaucetHoleCount(): Int = binding.spFaucetHoles.selectedItemPosition
     private fun getBackBoardCount(): Int = binding.spBackBoard.selectedItemPosition
-    private fun getAdjustableLegCount(): Int = binding.spAdjustableLeg.selectedItemPosition * 2
+    private fun getAdjustableLegCount(): Int =
+        binding.spAdjustableLeg.selectedItemPosition * 2
 
     private fun calculate() {
         val width = binding.etWidth.text.toString().trim().toIntOrNull()
@@ -343,91 +237,24 @@ class BudgetCalculatorFragment : Fragment() {
         val steelType = getSelectedSteelType() ?: return
         val thickness = getSelectedThickness() ?: return
 
-        val pocketHeightMm = getPocketHeightMm()
-        val isShelfAdded = blenderShelfWidthMm > 0
-        val faucetHoleCount = getFaucetHoleCount()
-        val backBoardCount = getBackBoardCount()
-        val adjustableLegCount = getAdjustableLegCount()
-
         try {
             val result = calculateUseCase.execute(
                 widthMm = width,
                 depthMm = depth,
                 steelType = steelType,
                 thicknessMm = thickness,
-                pocketCount = pocketCount,
-                pocketHeightMm = pocketHeightMm,
-                isShelfAdded = isShelfAdded,
-                blenderShelfWidthMm = blenderShelfWidthMm,
-                faucetHoleCount = faucetHoleCount,
-                backBoardCount = backBoardCount,
-                adjustableLegCount = adjustableLegCount,
-                solidSinkType = solidSinkType
+                pocketCount = config.pocketCount,
+                pocketHeightMm = config.pocketHeightMm,
+                isShelfAdded = config.isShelfAdded,
+                blenderShelfWidthMm = config.blenderShelfWidthMm,
+                faucetHoleCount = getFaucetHoleCount(),
+                backBoardCount = getBackBoardCount(),
+                adjustableLegCount = getAdjustableLegCount(),
+                solidSinkType = config.solidSinkType
             )
             lastResult = result
-
-            val formatted = CalculationFormatter.format(result, pocketCount)
-
-            binding.tvResult.text = formatted.totalWeight
-            binding.tvWeightAisi304.text = formatted.aisi304
-            binding.tvWeightAisi430.text = formatted.aisi430
-            binding.tvCountertopWeight.text = formatted.countertop
-            binding.tvSinkWeight.text = formatted.sink
-            binding.tvInsertWeight.text = formatted.insert
-            binding.tvPartitionsWeight.text = formatted.partitions
-
-            // ── Карман для бутылок ──
-            if (pocketCount > 0) {
-                binding.tvPocketWeightAddition.text = formatted.pocket
-                binding.tvPocketWeightAddition.visibility = View.VISIBLE
-            } else {
-                binding.tvPocketWeightAddition.visibility = View.GONE
-            }
-
-            // ── Цельнотянутая мойка ──
-            if (solidSinkType != SolidSinkType.NONE) {
-                binding.tvSolidSinkResult.text = "Цельнотянутая мойка: ${solidSinkType.label} мм — 1 шт"
-                binding.tvSolidSinkResult.visibility = View.VISIBLE
-            } else {
-                binding.tvSolidSinkResult.visibility = View.GONE
-            }
-
-            // ── Отверстия для смесителя ──
-            if (faucetHoleCount > 0) {
-                binding.tvFaucetHolesResult.text = formatted.faucetHoles
-                binding.tvFaucetHolesResult.visibility = View.VISIBLE
-            } else {
-                binding.tvFaucetHolesResult.visibility = View.GONE
-            }
-
-            // ── Задний борт ──
-            if (backBoardCount > 0) {
-                binding.tvBackBoardResult.text = "Задний борт: $backBoardCount шт"
-                binding.tvBackBoardResult.visibility = View.VISIBLE
-            } else {
-                binding.tvBackBoardResult.visibility = View.GONE
-            }
-
-            // ── Регулируемая опора ──
-            if (adjustableLegCount > 0) {
-                binding.tvAdjustableLegResult.text = "Регулируемая опора: $adjustableLegCount шт"
-                binding.tvAdjustableLegResult.visibility = View.VISIBLE
-            } else {
-                binding.tvAdjustableLegResult.visibility = View.GONE
-            }
-            // ── Полка для блендера ──
-            if (blenderShelfWidthMm > 0) {
-                binding.tvBlenderShelfWeight.text =
-                    "Полка для блендера:Ширина ${blenderShelfWidthMm} мм- ${DecimalFormat("0.##").format(result.blenderShelfWeightKg)} кг"
-                binding.tvBlenderShelfWeight.visibility = View.VISIBLE
-            } else {
-                binding.tvBlenderShelfWeight.visibility = View.GONE
-            }
-
-
-            showAllResults()
+            renderResults(result, width, depth)
             viewModel.calculate(widthMm = width, depthMm = depth, heightMm = height)
-
         } catch (e: IllegalArgumentException) {
             showError(e.message ?: "Ошибка расчёта")
         } catch (_: Exception) {
@@ -435,7 +262,67 @@ class BudgetCalculatorFragment : Fragment() {
         }
     }
 
-    // ── Корзина ───────────────────────────────────────────
+    private fun renderResults(result: CalculationResult, width: Int, depth: Int) {
+        val formatted = CalculationFormatter.format(result, config.pocketCount)
+        val faucetHoleCount = getFaucetHoleCount()
+        val backBoardCount = getBackBoardCount()
+        val adjustableLegCount = getAdjustableLegCount()
+
+        binding.tvResult.text = formatted.totalWeight
+        binding.tvWeightAisi304.text = formatted.aisi304
+        binding.tvWeightAisi430.text = formatted.aisi430
+
+        val plywoodAreaSqM = (width * depth) / 1_000_000.0
+        binding.tvCountertopWeight.text =
+            "${formatted.countertop}\nФанера: ${"%.2f".format(plywoodAreaSqM)} м²"
+
+        binding.tvSinkWeight.text = formatted.sink
+        binding.tvInsertWeight.text = formatted.insert
+        binding.tvPartitionsWeight.text = formatted.partitions
+
+        binding.tvPocketWeightAddition.visibility =
+            if (config.pocketCount > 0) View.VISIBLE else View.GONE
+        if (config.pocketCount > 0) {
+            binding.tvPocketWeightAddition.text = formatted.pocket
+        }
+
+        binding.tvSolidSinkResult.visibility =
+            if (config.solidSinkType != SolidSinkType.NONE) View.VISIBLE else View.GONE
+        if (config.solidSinkType != SolidSinkType.NONE) {
+            binding.tvSolidSinkResult.text =
+                "Цельнотянутая мойка: ${config.solidSinkType.label} мм — 1 шт"
+        }
+
+        binding.tvFaucetHolesResult.visibility =
+            if (faucetHoleCount > 0) View.VISIBLE else View.GONE
+        if (faucetHoleCount > 0) {
+            binding.tvFaucetHolesResult.text = formatted.faucetHoles
+        }
+
+        binding.tvBackBoardResult.visibility =
+            if (backBoardCount > 0) View.VISIBLE else View.GONE
+        if (backBoardCount > 0) {
+            binding.tvBackBoardResult.text = "Задний борт: $backBoardCount шт"
+        }
+
+        binding.tvAdjustableLegResult.visibility =
+            if (adjustableLegCount > 0) View.VISIBLE else View.GONE
+        if (adjustableLegCount > 0) {
+            binding.tvAdjustableLegResult.text = "Регулируемая опора: $adjustableLegCount шт"
+        }
+
+        binding.tvBlenderShelfWeight.visibility =
+            if (config.blenderShelfWidthMm > 0) View.VISIBLE else View.GONE
+        if (config.blenderShelfWidthMm > 0) {
+            binding.tvBlenderShelfWeight.text =
+                "Полка для блендера:Ширина ${config.blenderShelfWidthMm} мм- " +
+                        "${DecimalFormat("0.##").format(result.blenderShelfWeightKg)} кг"
+        }
+
+        showAllResults()
+    }
+
+    // ── Корзина ──────────────────────────────────────────
 
     private fun addToCart() {
         val width = binding.etWidth.text.toString().trim().toIntOrNull()
@@ -445,54 +332,41 @@ class BudgetCalculatorFragment : Fragment() {
 
         val steelType = getSelectedSteelType() ?: return
         val thickness = getSelectedThickness() ?: return
-
         val result = lastResult ?: run {
             showError("Сначала выполните расчёт")
             return
         }
 
-        val isShelfAdded = blenderShelfWidthMm > 0
-
-        val faucetHolePricePerUnit = sharedPreferences.getFloat(KEY_FAUCET_HOLE, 0f).toDouble()
-        val backBoardPricePerUnit = sharedPreferences.getFloat(KEY_BACK_BOARD, 0f).toDouble()
-        val adjustableLegPricePerUnit = sharedPreferences.getFloat(KEY_ADJUSTABLE_LEG, 0f).toDouble()
-
-        // Цены цельнотянутых моек
-        val sink400x400Price = sharedPreferences.getFloat("price_sink_400x400", 0f).toDouble()
-        val sink400x500Price = sharedPreferences.getFloat("price_sink_400x500", 0f).toDouble()
-        val sink500x500Price = sharedPreferences.getFloat("price_sink_500x500", 0f).toDouble()
-        val sink500x400Price = sharedPreferences.getFloat("price_sink_500x400", 0f).toDouble()
-
         showNameDialog { enteredName ->
-            addToCartUseCase.execute(
-                name = enteredName,
-                widthMm = width,
-                depthMm = depth,
-                heightMm = height,
-                steelType = steelType.name,
-                thicknessMm = thickness,
-                pocketsCount = pocketCount,
-                calculationResult = result,
-                pipeMeters = lastPipeMeters,
-                isBlenderShelfAdded = isShelfAdded,
-                blenderShelfWidthMm = blenderShelfWidthMm,
-                faucetHolePricePerUnit = faucetHolePricePerUnit,
-                backBoardPricePerUnit = backBoardPricePerUnit,
-                adjustableLegPricePerUnit = adjustableLegPricePerUnit,
-                solidSinkType = solidSinkType,
-                sink400x400Price = sink400x400Price,
-                sink400x500Price = sink400x500Price,
-                sink500x500Price = sink500x500Price,
-                sink500x400Price = sink500x400Price
-            )
-            Toast.makeText(requireContext(), "«$enteredName» добавлено в корзину", Toast.LENGTH_SHORT).show()
+            viewLifecycleOwner.lifecycleScope.launch {
+                addToCartHelper.execute(
+                    name = enteredName,
+                    widthMm = width,
+                    depthMm = depth,
+                    heightMm = height,
+                    steelType = steelType,
+                    thicknessMm = thickness,
+                    config = config,
+                    calculationResult = result,
+                    pipeMeters = lastPipeMeters
+                )
+                Toast.makeText(
+                    requireContext(),
+                    "«$enteredName» добавлено в корзину",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-            val bottomNav = requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_nav)
-            bottomNav.selectedItemId = R.id.dest_cart
+                val bottomNav =
+                    requireActivity()
+                        .findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(
+                            R.id.bottom_nav
+                        )
+                bottomNav.selectedItemId = R.id.dest_cart
+            }
         }
     }
 
-    // ── Диалоги ───────────────────────────────────────────
+    // ── Диалог названия ──────────────────────────────────
 
     private fun showNameDialog(onConfirm: (String) -> Unit) {
         val width = binding.etWidth.text.toString().trim().toIntOrNull() ?: 0
@@ -546,7 +420,8 @@ class BudgetCalculatorFragment : Fragment() {
             binding.etHeight.text?.isNotEmpty() == true
 
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
@@ -578,107 +453,5 @@ class BudgetCalculatorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    // ── Цельнотянутая мойка (Bottom Sheet) ────────────────
-
-    private fun showSinkBottomSheet() {
-        val dialog = BottomSheetDialog(requireContext())
-        val sheetView = layoutInflater.inflate(R.layout.dialog_sink_bottom_sheet, null)
-
-        val rgSinkType = sheetView.findViewById<RadioGroup>(R.id.rgSinkType)
-        val btnApply =
-            sheetView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnApplySink)
-        val tvWarning = sheetView.findViewById<android.widget.TextView>(R.id.tvSinkWarning)
-
-        rgSinkType.check(
-            when (solidSinkType) {
-                SolidSinkType.SINK_400x400 -> R.id.rbSink400x400
-                SolidSinkType.SINK_400x500 -> R.id.rbSink400x500
-                SolidSinkType.SINK_500x500 -> R.id.rbSink500x500
-                SolidSinkType.SINK_500x400 -> R.id.rbSink500x400   // ← добавить
-                SolidSinkType.NONE -> R.id.rbSinkNone
-            }
-        )
-
-        val widthMm = binding.etWidth.text.toString().trim().toIntOrNull() ?: 0
-        val depthMm = binding.etDepth.text.toString().trim().toIntOrNull() ?: 0
-
-        fun checkFit(type: SolidSinkType): String? {
-            if (type == SolidSinkType.NONE) return null
-
-            if (type.depthMm + 100 > depthMm) {
-                return "Мойка ${type.label} не влезет по глубине (нужно ${type.depthMm + 100} мм, станция $depthMm мм)"
-            }
-
-            if (type.widthMm + 150 >= widthMm) {
-                return "Мойка ${type.label} не влезет по ширине (нужно ${type.widthMm + 120} мм, станция $widthMm мм)"
-            }
-
-            return null
-        }
-
-
-        fun updateWarning() {
-            val selected = when (rgSinkType.checkedRadioButtonId) {
-                R.id.rbSink400x400 -> SolidSinkType.SINK_400x400
-                R.id.rbSink400x500 -> SolidSinkType.SINK_400x500
-                R.id.rbSink500x500 -> SolidSinkType.SINK_500x500
-                R.id.rbSink500x400 -> SolidSinkType.SINK_500x400
-                else -> SolidSinkType.NONE
-            }
-            val warning = checkFit(selected)
-            if (warning != null) {
-                tvWarning.text = warning
-                tvWarning.visibility = View.VISIBLE
-                btnApply.isEnabled = false
-                btnApply.alpha = 0.4f
-            } else {
-                tvWarning.visibility = View.GONE
-                btnApply.isEnabled = true
-                btnApply.alpha = 1f
-            }
-        }
-
-        rgSinkType.setOnCheckedChangeListener { _, _ -> updateWarning() }
-        updateWarning()
-
-        btnApply.setOnClickListener {
-            solidSinkType = when (rgSinkType.checkedRadioButtonId) {
-                R.id.rbSink400x400 -> SolidSinkType.SINK_400x400
-                R.id.rbSink400x500 -> SolidSinkType.SINK_400x500
-                R.id.rbSink500x500 -> SolidSinkType.SINK_500x500
-                R.id.rbSink500x400 -> SolidSinkType.SINK_500x400
-                else -> SolidSinkType.NONE
-            }
-
-            updateSinkButtonState()
-
-            if (areFieldsFilled()) {
-                hideKeyboard()
-                calculate()
-            }
-            dialog.dismiss()
-        }
-
-        dialog.setContentView(sheetView)
-        dialog.show()
-    }
-
-        private fun updateSinkButtonState() {
-        val btn = binding.btnAddSolidSink
-        if (solidSinkType == SolidSinkType.NONE) {
-            btn.text = "Добавить цельнотянутую мойку"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_default)
-            )
-            btn.setTextColor(Color.BLACK)
-        } else {
-            btn.text = "Мойка: ${solidSinkType.label} мм"
-            btn.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.shelf_button_added)
-            )
-            btn.setTextColor(Color.WHITE)
-        }
     }
 }

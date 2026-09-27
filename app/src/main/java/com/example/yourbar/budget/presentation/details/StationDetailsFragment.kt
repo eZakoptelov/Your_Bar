@@ -23,6 +23,9 @@ class StationDetailsFragment : Fragment() {
     private val getDetailsUseCase: GetStationDetailsUseCase by inject()
     private val adapter = StationPartsAdapter()
 
+    private val isAdmin: Boolean
+        get() = activity?.intent?.getBooleanExtra("is_admin", false) ?: false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,8 +59,17 @@ class StationDetailsFragment : Fragment() {
         binding.tvStationName.text = item.displayName
         binding.tvStationDimensions.text =
             "Габариты: ${item.widthMm}×${item.depthMm}×${item.heightMm} мм"
-        binding.tvStationTotalWeight.text = "Общий вес: ${df.format(item.totalWeightKg)} кг"
-        binding.tvStationPipe.text = "Труба 25×25: ${df.format(item.pipeMeters)} мп"
+
+        // Общий вес и труба — только админу
+        if (isAdmin) {
+            binding.tvStationTotalWeight.text = "Общий вес: ${df.format(item.totalWeightKg)} кг"
+            binding.tvStationTotalWeight.visibility = View.VISIBLE
+            binding.tvStationPipe.text = "Труба 25×25: ${df.format(item.pipeMeters)} мп"
+            binding.tvStationPipe.visibility = View.VISIBLE
+        } else {
+            binding.tvStationTotalWeight.visibility = View.GONE
+            binding.tvStationPipe.visibility = View.GONE
+        }
 
         val steelType = when (item.steelType) {
             "AISI 304", "AISI_304" -> SteelType.AISI_304
@@ -76,11 +88,11 @@ class StationDetailsFragment : Fragment() {
             faucetHoleCount = item.faucetHoleCount,
             backBoardCount = item.backBoardCount,
             adjustableLegCount = item.adjustableLegCount,
-            solidSinkType = SolidSinkType.valueOf(item.solidSinkType ?: "NONE")
+            solidSinkType = SolidSinkType.valueOf(item.solidSinkType ?: "NONE"),
+            isAdmin = isAdmin
         )
 
         adapter.submitList(parts)
         binding.tvEmptyState.visibility = if (parts.isEmpty()) View.VISIBLE else View.GONE
     }
-
 }

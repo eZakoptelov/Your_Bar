@@ -6,14 +6,13 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "prices")
 data class PriceEntity(
     @PrimaryKey
-    val id: Int = 0, // одна строка — один набор цен
+    val id: Int = 0,
     val aisi304PerKg: Double,
     val aisi430PerKg: Double,
     val pipe25PerM: Double,
     val pipe40PerM: Double,
     val insulationPerM2: Double,
-    val faucetHolePerPiece: Double,
-    val backBoardPerPiece: Double,
+    val plywoodPerM2: Double,
     val adjustableLegPerPiece: Double,
     val sink400x400PerPiece: Double,
     val sink400x500PerPiece: Double,

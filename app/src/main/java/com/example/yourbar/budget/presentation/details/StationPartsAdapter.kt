@@ -28,7 +28,18 @@ class StationPartsAdapter :
 
         fun bind(part: StationPart) {
             binding.tvPartTitle.text = part.title
-            binding.tvPartDimensions.text = "Размеры: ${part.dimensions}"
+
+            val isSimpleItem = part.title == "Отверстие для смесителя"
+                    || part.title == "Задний борт"
+                    || part.title == "Регулируемая опора"
+
+            if (isSimpleItem) {
+                binding.tvPartDimensions.visibility = View.GONE
+            } else {
+                binding.tvPartDimensions.visibility = View.VISIBLE
+                binding.tvPartDimensions.text = "Размеры: ${part.dimensions}"
+            }
+
             binding.tvPartQuantity.visibility = View.VISIBLE
             binding.tvPartQuantity.text = "Количество: ${part.quantity} шт"
 
@@ -39,17 +50,22 @@ class StationPartsAdapter :
                 binding.tvPartMaterial.visibility = View.VISIBLE
                 binding.tvPartMaterial.text =
                     "Сталь: ${part.steelType}, толщина ${part.thicknessMm} мм"
-                binding.tvPartWeight.visibility = View.VISIBLE
-                binding.tvPartWeight.text = "Вес: ${"%.2f".format(part.totalWeightKg)} кг"
+
+                if (part.weightKg > 0.0) {
+                    binding.tvPartWeight.visibility = View.VISIBLE
+                    binding.tvPartWeight.text = "Вес: ${"%.2f".format(part.weightKg)} кг"
+                } else {
+                    binding.tvPartWeight.visibility = View.GONE
+                }
             }
         }
     }
-}
 
         object StationPartDiffCallback : DiffUtil.ItemCallback<StationPart>() {
-    override fun areItemsTheSame(oldItem: StationPart, newItem: StationPart) =
-        oldItem.title == newItem.title
+        override fun areItemsTheSame(oldItem: StationPart, newItem: StationPart) =
+            oldItem.title == newItem.title
 
-    override fun areContentsTheSame(oldItem: StationPart, newItem: StationPart) =
-        oldItem == newItem
+        override fun areContentsTheSame(oldItem: StationPart, newItem: StationPart) =
+            oldItem == newItem
+    }
 }

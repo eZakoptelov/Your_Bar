@@ -45,8 +45,7 @@ class PriceFragment : Fragment() {
             binding.etPricePipe25,
             binding.etPricePipe40,
             binding.etPriceInsulation,
-            binding.etPriceFaucetHole,
-            binding.etPriceBackBoard,
+            binding.etPricePlywood,
             binding.etPriceAdjustableLeg,
             binding.etPriceSink400x400,
             binding.etPriceSink400x500,
@@ -78,8 +77,7 @@ class PriceFragment : Fragment() {
         binding.etPricePipe25.setText(prices.pipe25PerM.toCleanString())
         binding.etPricePipe40.setText(prices.pipe40PerM.toCleanString())
         binding.etPriceInsulation.setText(prices.insulationPerM2.toCleanString())
-        binding.etPriceFaucetHole.setText(prices.faucetHolePerPiece.toCleanString())
-        binding.etPriceBackBoard.setText(prices.backBoardPerPiece.toCleanString())
+        binding.etPricePlywood.setText(prices.plywoodPerM2.toCleanString())
         binding.etPriceAdjustableLeg.setText(prices.adjustableLegPerPiece.toCleanString())
         binding.etPriceSink400x400.setText(prices.sink400x400PerPiece.toCleanString())
         binding.etPriceSink400x500.setText(prices.sink400x500PerPiece.toCleanString())
@@ -96,8 +94,7 @@ class PriceFragment : Fragment() {
             pipe25PerM = binding.etPricePipe25.text.toString().toDoubleOrNull() ?: 0.0,
             pipe40PerM = binding.etPricePipe40.text.toString().toDoubleOrNull() ?: 0.0,
             insulationPerM2 = binding.etPriceInsulation.text.toString().toDoubleOrNull() ?: 0.0,
-            faucetHolePerPiece = binding.etPriceFaucetHole.text.toString().toDoubleOrNull() ?: 0.0,
-            backBoardPerPiece = binding.etPriceBackBoard.text.toString().toDoubleOrNull() ?: 0.0,
+            plywoodPerM2 = binding.etPricePlywood.text.toString().toDoubleOrNull() ?: 0.0,
             adjustableLegPerPiece = binding.etPriceAdjustableLeg.text.toString().toDoubleOrNull() ?: 0.0,
             sink400x400PerPiece = binding.etPriceSink400x400.text.toString().toDoubleOrNull() ?: 0.0,
             sink400x500PerPiece = binding.etPriceSink400x500.text.toString().toDoubleOrNull() ?: 0.0,

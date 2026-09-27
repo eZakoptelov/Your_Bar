@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:background="@color/white">
+
+    <!-- Верхний спейсер — центрирует кнопку "Вход" -->
+    <View
+        android:id="@+id/spacerTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Обычный вход — по центру экрана -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUserLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_steel_shiny"
+        android:letterSpacing="0.08"
+        android:text="Вход"
+        android:textColor="#1F2937"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:rippleColor="#40000000" />
+
+    <!-- Средний спейсер — толкает админ-кнопку вниз -->
+    <View
+        android:id="@+id/spacerMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Скрытая панель пароля -->
+    <LinearLayout
+        android:id="@+id/adminPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etAdminPassword"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Введите пароль"
+            android:inputType="textPassword"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelAdmin"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Отмена"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnConfirmAdmin"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_steel_shiny"
+                android:text="Войти"
+                android:textColor="#1F2937"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:rippleColor="#40000000" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Нижний спейсер — центрирует панель пароля -->
+    <View
+        android:id="@+id/spacerBottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <!-- Вход администратора — прижат к низу -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdminLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:text="Вход администратора"
+        android:textSize="16sp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+</LinearLayout>

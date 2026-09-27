@@ -7,23 +7,26 @@ object StationPartsBuilder {
     private const val POCKET_BACK_H = 260
     private const val POCKET_DEPTH = 110
     private const val POCKET_THICK = 1.5
-    private const val SINK_FIXED_H = 265
+    private const val SINK_FIXED_H = 250
     private const val SINK_REDUCE_D = 70
     private const val SINK_REDUCE_W = 70
-    private const val PART_REDUCE_H = 10
+    private const val PART_ADD_H = 5
     private const val PART_REDUCE_W = 220
 
-    // Полка для блендера: глубина и высота фиксированы, ширина берётся из params
     private const val SHELF_DEPTH = 230
     private const val SHELF_HEIGHT = 310
     private const val SHELF_THICK = 1.5
 
     fun build(
         params: CalculationInputParams,
-        result: CalculationResult
+        result: CalculationResult,
+        isAdmin: Boolean = true
     ): List<StationPart> {
         val parts = mutableListOf<StationPart>()
         val steel = params.steelType.displayName
+
+        // Для обычного пользователя вес не показываем
+        val w = if (isAdmin) 1.0 else 0.0
 
         // ── 1. Столешница ──
         val countertopW = params.widthMm + AUTO_ADD_MM
@@ -32,10 +35,14 @@ object StationPartsBuilder {
         parts.add(
             StationPart(
                 title = "Столешница",
-                dimensions = "${countertopW}×${countertopD} мм",
+                dimensions = if (isAdmin) {
+                    "${countertopW}×${countertopD} мм"
+                } else {
+                    "${params.widthMm}×${params.depthMm} мм"
+                },
                 steelType = steel,
                 thicknessMm = params.thicknessMm,
-                weightKg = result.countertopWeightKg,
+                weightKg = result.countertopWeightKg * w,
                 quantity = 1
             )
         )
@@ -53,19 +60,22 @@ object StationPartsBuilder {
             parts.add(
                 StationPart(
                     title = "Карман для бутылок",
-                    dimensions = "${pocketWidthMm}×${POCKET_FRONT_H}×${POCKET_DEPTH} мм\n" +
-                            "Задняя стенка ${params.pocketHeightMm} мм\n" +
-                            "Боковые стенки: 2 шт × ${params.pocketHeightMm - 10}×${POCKET_DEPTH} мм",
+                    dimensions = if (isAdmin) {
+                        "${pocketWidthMm}×${POCKET_FRONT_H}×${POCKET_DEPTH} мм\n" +
+                                "Задняя стенка ${params.pocketHeightMm} мм\n" +
+                                "Боковые стенки: 2 шт × ${params.pocketHeightMm - 10}×${POCKET_DEPTH} мм"
+                    } else {
+                        "${pocketWidthMm} мм"
+                    },
                     steelType = "AISI 430",
                     thicknessMm = POCKET_THICK,
-                    weightKg = pocketWeight,
+                    weightKg = pocketWeight * w,
                     quantity = params.pocketCount
                 )
             )
         }
 
-
-        // ── 3. Корпус мойки ──
+        // ── 3. Ванна для льда ──
         val sinkW = if (params.solidSinkType != SolidSinkType.NONE) {
             params.widthMm - params.solidSinkType.widthMm - 120
         } else {
@@ -75,11 +85,21 @@ object StationPartsBuilder {
 
         parts.add(
             StationPart(
-                title = "Корпус мойки",
-                dimensions = "${sinkW}×${sinkD}×${SINK_FIXED_H} мм",
+                title = "Ванна для льда",
+                dimensions = if (isAdmin) {
+                    "${sinkW}×${sinkD}×${SINK_FIXED_H} мм"
+                } else {
+                    val userSinkW = if (params.solidSinkType != SolidSinkType.NONE) {
+                        params.widthMm - params.solidSinkType.widthMm - 150
+                    } else {
+                        params.widthMm - 150
+                    }
+                    val userSinkD = params.depthMm - 100
+                    "${userSinkW}×${userSinkD}×${SINK_FIXED_H} мм"
+                },
                 steelType = "AISI 304",
                 thicknessMm = 1.0,
-                weightKg = result.sinkWeightKg,
+                weightKg = result.sinkWeightKg * w,
                 quantity = 1
             )
         )
@@ -99,43 +119,47 @@ object StationPartsBuilder {
             )
         }
 
+        // ── 4. Перфорированная вставка (только админ) ──
+        if (isAdmin) {
+            val insW = params.widthMm - 75
+            val insD = params.depthMm - 80
 
-        // ── 4. Перфорированная вставка ──
-        val insW = params.widthMm - SINK_REDUCE_W
-        val insD = params.depthMm - SINK_REDUCE_D
-
-        parts.add(
-            StationPart(
-                title = "Перфорированная вставка",
-                dimensions = "${insW}×${insD} мм",
-                steelType = "AISI 430",
-                thicknessMm = 0.8,
-                weightKg = result.insertWeightKg,
-                quantity = 1
+            parts.add(
+                StationPart(
+                    title = "Перфорированная вставка",
+                    dimensions = "${insW}×${insD} мм",
+                    steelType = "AISI 430",
+                    thicknessMm = 0.8,
+                    weightKg = result.insertWeightKg,
+                    quantity = 1
+                )
             )
-        )
-
-        // ── 5. Съёмные перегородки ──
-        val part12H = SINK_FIXED_H - PART_REDUCE_H
-        val part3W = sinkW - PART_REDUCE_W
-        val part3H = SINK_FIXED_H - PART_REDUCE_H
-
-        val partitionsDesc = if (part3W > 0) {
-            "Перегородки 1–2: ${part12H}×${sinkD} мм\nПерегородка 3: ${part3H}×${part3W} мм"
-        } else {
-            "Перегородки 1–2: ${part12H}×${sinkD} мм"
         }
 
-        parts.add(
-            StationPart(
-                title = "Съёмные перегородки",
-                dimensions = partitionsDesc,
-                steelType = "AISI 430",
-                thicknessMm = 0.8,
-                weightKg = result.partitionsWeightKg,
-                quantity = 1
+        // ── 5. Съёмные перегородки (только админ) ──
+        if (isAdmin) {
+            val part12H = SINK_FIXED_H + PART_ADD_H
+            val part12D = sinkD - 32
+            val part3W = sinkW - 252
+            val part3H = SINK_FIXED_H + PART_ADD_H
+
+            val partitionsDesc = if (part3W > 0) {
+                "Перегородки 1–2: ${part12H}×${part12D} мм\nПерегородка 3: ${part3H}×${part3W} мм"
+            } else {
+                "Перегородки 1–2: ${part12H}×${part12D} мм"
+            }
+
+            parts.add(
+                StationPart(
+                    title = "Съёмные перегородки",
+                    dimensions = partitionsDesc,
+                    steelType = "AISI 430",
+                    thicknessMm = 0.8,
+                    weightKg = result.partitionsWeightKg,
+                    quantity = 1
+                )
             )
-        )
+        }
 
         // ── 6. Полка для блендера ──
         if (params.isShelfAdded && result.blenderShelfWeightKg > 0.0) {
@@ -145,23 +169,42 @@ object StationPartsBuilder {
             parts.add(
                 StationPart(
                     title = "Полка для блендера",
-                    dimensions = "${params.blenderShelfWidthMm}×${SHELF_DEPTH}×${SHELF_HEIGHT} мм\n" +
-                            "боковые стенки: 2 шт × ${shelfSideH}×${shelfSideD} мм (треугольник)",
+                    dimensions = if (isAdmin) {
+                        "${params.blenderShelfWidthMm}×${SHELF_DEPTH}×${SHELF_HEIGHT} мм\n" +
+                                "боковые стенки: 2 шт × ${shelfSideH}×${shelfSideD} мм (треугольник)"
+                    } else {
+                        "${params.blenderShelfWidthMm} мм"
+                    },
                     steelType = "AISI 430",
                     thicknessMm = SHELF_THICK,
-                    weightKg = result.blenderShelfWeightKg,
+                    weightKg = result.blenderShelfWeightKg * w,
                     quantity = 1
                 )
             )
         }
 
-
-        // ── 7. Теплоизоляция ──
-        if (result.insulationAreaSqM > 0.0) {
+        // ── 7. Теплоизоляция (только админ) ──
+        if (isAdmin && result.insulationAreaSqM > 0.0) {
             parts.add(
                 StationPart(
                     title = "Теплоизоляция",
                     dimensions = "${String.format("%.2f", result.insulationAreaSqM)} м²",
+                    steelType = "—",
+                    thicknessMm = 0.0,
+                    weightKg = 0.0,
+                    quantity = 1
+                )
+            )
+        }
+
+        // ── 7a. Фанера (только админ) ──
+        if (isAdmin) {
+            val plywoodArea = (params.widthMm * params.depthMm) / 1_000_000.0
+
+            parts.add(
+                StationPart(
+                    title = "Фанера",
+                    dimensions = "${String.format("%.2f", plywoodArea)} м²",
                     steelType = "—",
                     thicknessMm = 0.0,
                     weightKg = 0.0,
@@ -198,8 +241,8 @@ object StationPartsBuilder {
             )
         }
 
-        // ── 10. Регулируемые опоры ──
-        if (result.adjustableLegCount > 0) {
+        // ── 10. Регулируемые опоры (только админ) ──
+        if (isAdmin && result.adjustableLegCount > 0) {
             parts.add(
                 StationPart(
                     title = "Регулируемая опора",

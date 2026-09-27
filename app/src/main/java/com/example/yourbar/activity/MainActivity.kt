@@ -19,34 +19,44 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var isAdmin = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        isAdmin = intent.getBooleanExtra(LoginActivity.EXTRA_IS_ADMIN, false)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-
             view.updatePadding(left = insets.left, right = insets.right, top = insets.top)
-
             if (view is CoordinatorLayout) {
                 view.updatePadding(bottom = 0)
                 view.fitsSystemWindows = false
             }
-
             WindowInsetsCompat.CONSUMED
         }
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.dest_assembly, R.id.dest_cart, R.id.dest_work_price)
-        )
+        val topLevelDestinations = if (isAdmin) {
+            setOf(R.id.dest_assembly, R.id.dest_cart, R.id.dest_price, R.id.dest_work_price)
+        } else {
+            setOf(R.id.dest_assembly, R.id.dest_cart)
+        }
 
+        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+
+        if (!isAdmin) {
+            val menu = binding.bottomNav.menu
+            menu.findItem(R.id.dest_price)?.isVisible = false
+            menu.findItem(R.id.dest_work_price)?.isVisible = false
+        }
 
         binding.bottomNav.setupWithNavController(navController)
 
