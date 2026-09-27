@@ -1,59 +1,37 @@
-package com.example.yourbar.cart.data
+package com.example.yourbar.cart.data.repository
 
-import android.content.Context
 import android.util.Log
+import com.example.yourbar.cart.data.dao.CartDao
+import com.example.yourbar.cart.data.mapper.toDomain
+import com.example.yourbar.cart.data.mapper.toEntity
 import com.example.yourbar.cart.domain.CartItem
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class CartRepository(private val context: Context) {
+class CartRepository(private val dao: CartDao) {
 
-    private val prefs = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE)
-    private val gson = Gson()
-    private val key = "cart_items_json"
+    // Теперь items — это Flow из Room, всегда актуальный
+    val items: Flow<List<CartItem>> = dao.observeAll().map { entities ->
+        entities.map { it.toDomain() }
+    }
 
-    private val _items = MutableStateFlow<List<CartItem>>(loadItems())
-    val items: StateFlow<List<CartItem>> = _items.asStateFlow()
-
-    fun add(item: CartItem) {
+    suspend fun add(item: CartItem) {
         Log.d("CART_REPO", "add: name='${item.name}', displayName='${item.displayName}'")
-        _items.value += item
-        saveItems()
-        Log.d("CART_REPO", "Всего элементов: ${_items.value.size}")
+        dao.insert(item.toEntity())
     }
 
-    fun remove(id: String) {
-        _items.value = _items.value.filterNot { it.id == id }
-        saveItems()
+    suspend fun remove(id: String) {
+        dao.remove(id)
     }
 
-    fun clear() {
-        _items.value = emptyList()
-        saveItems()
+    suspend fun clear() {
+        dao.clear()
     }
 
-    fun totalWeight(): Double = _items.value.sumOf { it.totalWeightKg }
-    fun totalPipeMeters(): Double = _items.value.sumOf { it.pipeMeters }
-    fun itemCount(): Int = _items.value.size
-
-    // ── Сохранение в SharedPreferences ──
-    private fun saveItems() {
-        val json = gson.toJson(_items.value)
-        prefs.edit().putString(key, json).apply()
+    suspend fun totalWeight(): Double {
+        // Если нужен — можно добавить @Query в DAO
+        return 0.0
     }
 
-    // ── Загрузка из SharedPreferences ──
-    private fun loadItems(): List<CartItem> {
-        val json = prefs.getString(key, null) ?: return emptyList()
-        return runCatching {
-            val type = object : TypeToken<List<CartItem>>() {}.type
-            gson.fromJson<List<CartItem>>(json, type) ?: emptyList()
-        }.getOrElse {
-            Log.e("CART_REPO", "Ошибка загрузки корзины", it)
-            emptyList()
-        }
-    }
+    suspend fun itemCount(): Int = dao.count()
 }

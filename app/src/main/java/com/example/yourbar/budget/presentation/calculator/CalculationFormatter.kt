@@ -1,7 +1,6 @@
 package com.example.yourbar.budget.presentation.calculator
 
 import com.example.yourbar.budget.domain.calculator.models.CalculationResult
-import com.example.yourbar.budget.domain.calculator.models.SolidSinkType
 import java.text.DecimalFormat
 
 object CalculationFormatter {
@@ -40,12 +39,6 @@ object CalculationFormatter {
         } else {
             "Задний борт: нет"
         }
-        val solidSinkText = if (result.solidSinkType != SolidSinkType.NONE) {
-            val ss = result.solidSinkType
-            "Цельнотянутая мойка: ${ss.label} мм — 1 шт"
-        } else {
-            ""
-        }
 
         return FormattedResult(
             totalWeight = "Общий вес: ${df.format(result.totalWeightKg)} кг",
@@ -53,7 +46,7 @@ object CalculationFormatter {
             aisi430 = "Aisi 430: ${df.format(result.weightAisi430Kg)} кг",
             countertop = "Столешница: ${df.format(result.countertopWeightKg)} кг",
             pocket = "$pocketLabel ${df.format(pocketWeight)} кг",
-            sink = "Корпус мойки: ${df.format(result.sinkWeightKg)} кг",
+            sink = "Ванна для льда: ${df.format(result.sinkWeightKg)} кг",
             insert = "Перфорированная вставка: ${df.format(result.insertWeightKg)} кг",
             partitions = "Съёмные перегородки: ${df.format(result.partitionsWeightKg)} кг",
             faucetHoles = faucetHolesText,

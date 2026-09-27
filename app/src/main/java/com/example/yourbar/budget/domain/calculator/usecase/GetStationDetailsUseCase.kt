@@ -22,7 +22,8 @@ class GetStationDetailsUseCase(
         faucetHoleCount: Int = 0,
         backBoardCount: Int = 0,
         adjustableLegCount: Int = 0,
-        solidSinkType: SolidSinkType = SolidSinkType.NONE
+        solidSinkType: SolidSinkType = SolidSinkType.NONE,
+        isAdmin: Boolean = true
     ): List<StationPart> {
         val params = CalculationInputParams(
             widthMm = widthMm,
@@ -39,6 +40,6 @@ class GetStationDetailsUseCase(
             solidSinkType = solidSinkType
         )
         val result = repository.calculate(params)
-        return StationPartsBuilder.build(params, result)
+        return StationPartsBuilder.build(params, result, isAdmin)
     }
 }

@@ -14,7 +14,7 @@ class WorkPriceRepository(private val dao: WorkPriceDao) {
         if (dao.count() > 0) return
 
         val welding = listOf(
-            "Сварка столешницы " to "м шва",
+            "Сварка столешницы" to "шт",
             "Сварка кармана для бутылок" to "шт",
             "Сварка корпуса мойки" to "шт",
             "Сварка полки для блендера" to "шт",
@@ -32,10 +32,9 @@ class WorkPriceRepository(private val dao: WorkPriceDao) {
             "Отверстие под смеситель" to "шт",
             "Изготовление кармана для бутылок" to "шт",
             "Изготовление перфорированной вставки" to "шт",
-            "Изготовление сьёмных перегородок" to "шт",
-            "Проклейка основания (фанера)" to "шт",
-
-
+            "Изготовление борта" to "шт",
+            "Изготовление съёмных перегородок" to "шт",
+            "Проклейка основания столешницы(фанера)" to "шт"
         )
         locksmith.forEach { (title, unit) ->
             dao.insert("locksmith", title, unit, 0)

@@ -1,9 +1,10 @@
-package com.example.yourbar.price.data
+package com.example.yourbar.price.data.repository
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.yourbar.price.data.PriceEntity
 
 import kotlinx.coroutines.flow.Flow
 

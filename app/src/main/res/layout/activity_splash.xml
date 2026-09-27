@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <!-- Special For — крупно, с акцентом -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Special For"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="32dp" />
+
+
+    <!-- Software by — аккуратно, без акцента -->
+    <ImageView
+        android:layout_width="395dp"
+        android:layout_height="416dp"
+        android:contentDescription="Заставка"
+        android:scaleType="fitCenter"
+        android:src="@drawable/finist" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="10dp"
+        android:text="Software by  github.com/eZakoptelov"
+        android:textColor="#666666"
+        android:textSize="16sp" />
+    />
+
+</LinearLayout>

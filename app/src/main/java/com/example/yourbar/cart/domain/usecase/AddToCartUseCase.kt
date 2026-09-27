@@ -1,6 +1,6 @@
 package com.example.yourbar.cart.domain.usecase
 
-import com.example.yourbar.cart.data.CartRepository
+import com.example.yourbar.cart.data.repository.CartRepository
 import com.example.yourbar.budget.domain.calculator.models.CalculationResult
 import com.example.yourbar.budget.domain.calculator.models.SolidSinkType
 import com.example.yourbar.cart.domain.CartItem
@@ -8,7 +8,7 @@ import com.example.yourbar.cart.domain.CartItem
 class AddToCartUseCase(
     private val cartRepository: CartRepository
 ) {
-    fun execute(
+   suspend fun execute(
         name: String,
         widthMm: Int,
         depthMm: Int,

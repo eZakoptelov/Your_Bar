@@ -1,6 +1,6 @@
 package com.example.yourbar.budget.data.price
 
-import com.example.yourbar.price.data.PriceDao
+import com.example.yourbar.price.data.repository.PriceDao
 import com.example.yourbar.price.data.PriceEntity
 import com.example.yourbar.price.domain.models.BudgetPrices
 import kotlinx.coroutines.flow.Flow
@@ -29,8 +29,7 @@ class PriceRepository(
         pipe25PerM = pipe25PerM,
         pipe40PerM = pipe40PerM,
         insulationPerM2 = insulationPerM2,
-        faucetHolePerPiece = faucetHolePerPiece,
-        backBoardPerPiece = backBoardPerPiece,
+        plywoodPerM2 = plywoodPerM2,
         adjustableLegPerPiece = adjustableLegPerPiece,
         sink400x400PerPiece = sink400x400PerPiece,
         sink400x500PerPiece = sink400x500PerPiece,
@@ -45,8 +44,7 @@ class PriceRepository(
         pipe25PerM = pipe25PerM,
         pipe40PerM = pipe40PerM,
         insulationPerM2 = insulationPerM2,
-        faucetHolePerPiece = faucetHolePerPiece,
-        backBoardPerPiece = backBoardPerPiece,
+        plywoodPerM2 = plywoodPerM2,
         adjustableLegPerPiece = adjustableLegPerPiece,
         sink400x400PerPiece = sink400x400PerPiece,
         sink400x500PerPiece = sink400x500PerPiece,

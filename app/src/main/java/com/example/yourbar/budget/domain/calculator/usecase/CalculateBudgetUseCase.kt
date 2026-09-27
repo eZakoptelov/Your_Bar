@@ -75,7 +75,7 @@ class CalculateBudgetUseCase {
             Triple(0.0, 0.0, 0.0)
         }
 
-        // 3. Мойка
+        // 3. Мойка(Ванна для льда)
         val solidSink = params.solidSinkType
 
         val sinkW = if (solidSink != SolidSinkType.NONE) {

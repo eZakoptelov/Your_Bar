@@ -3,7 +3,7 @@ package com.example.yourbar
 import android.app.Application
 import com.example.yourbar.di.budgetModule
 import com.example.yourbar.di.calculatorModule
-import com.example.yourbar.cart.di.cartModule
+import com.example.yourbar.di.cartModule
 import com.example.yourbar.di.databaseModule
 import com.example.yourbar.di.priceModule
 import com.example.yourbar.di.workPriceModule

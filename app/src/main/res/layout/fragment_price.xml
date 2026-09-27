@@ -248,9 +248,9 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 6: Отверстие под смеситель -->
+            <!-- Строка 6: Фанера -->
             <LinearLayout
-                android:id="@+id/rowFaucetHole"
+                android:id="@+id/rowPlywood"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -267,13 +267,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.55"
-                    android:text="Отверстие под смеситель, цена за шт"
+                    android:text="Фанера, цена за м²"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
 
                 <EditText
-                    android:id="@+id/etPriceFaucetHole"
+                    android:id="@+id/etPricePlywood"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.45"
@@ -291,50 +291,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 7: Задний борт -->
-            <LinearLayout
-                android:id="@+id/rowBackBoard"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:weightSum="1"
-                app:layout_constraintTop_toBottomOf="@id/rowFaucetHole"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.55"
-                    android:text="Задний борт, цена за шт"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
-
-                <EditText
-                    android:id="@+id/etPriceBackBoard"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.45"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:hint="@string/Enter_price"
-                    android:textStyle="bold"
-                    android:textColor="@color/Crimson"
-                    android:textColorHint="#999999"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:background="@drawable/bg_edit_text_underline"
-                    android:paddingBottom="6dp"
-                    android:paddingTop="6dp"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
-
-            <!-- Строка 8: Регулируемая опора -->
+            <!-- Строка 7: Регулируемая опора -->
             <LinearLayout
                 android:id="@+id/rowAdjustableLeg"
                 android:layout_width="0dp"
@@ -342,7 +299,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:weightSum="1"
-                app:layout_constraintTop_toBottomOf="@id/rowBackBoard"
+                app:layout_constraintTop_toBottomOf="@id/rowPlywood"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="24dp"
@@ -377,7 +334,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 9: Цельнотянутая мойка 400×400, высота 250 -->
+            <!-- Строка 8: Цельнотянутая мойка 400×400, высота 250 -->
             <LinearLayout
                 android:id="@+id/rowSink400x400"
                 android:layout_width="0dp"
@@ -420,7 +377,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 10: Цельнотянутая мойка 400×500, высота 250 -->
+            <!-- Строка 9: Цельнотянутая мойка 400×500, высота 250 -->
             <LinearLayout
                 android:id="@+id/rowSink400x500"
                 android:layout_width="0dp"
@@ -463,7 +420,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 11: Цельнотянутая мойка 500×500, высота 250 -->
+            <!-- Строка 10: Цельнотянутая мойка 500×500, высота 250 -->
             <LinearLayout
                 android:id="@+id/rowSink500x500"
                 android:layout_width="0dp"
@@ -506,7 +463,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
-            <!-- Строка 12: Цельнотянутая мойка 500×400, высота 250 -->
+            <!-- Строка 11: Цельнотянутая мойка 500×400, высота 250 -->
             <LinearLayout
                 android:id="@+id/rowSink500x400"
                 android:layout_width="0dp"

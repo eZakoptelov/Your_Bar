@@ -12,6 +12,12 @@
         <item name="android:minHeight">50dp</item>
     </style>
 
+    <style name="Theme.Splash" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
 
 
 
